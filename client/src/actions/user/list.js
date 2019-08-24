@@ -3,7 +3,7 @@ import {
   normalize,
   extractHubURL,
   mercureSubscribe as subscribe
-} from '../../utils/dataAccess';
+} from '../../services/dataAccess';
 import { success as deleteSuccess } from './delete';
 
 export function error(error) {

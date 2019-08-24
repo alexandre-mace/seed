@@ -34,7 +34,7 @@ class Header extends React.Component {
                             ) : (
                                 <Link to="/">
                                     <Typography variant="h6" noWrap>
-                                        Nom du projet
+                                        Together
                                     </Typography>
                                 </Link>
                             )}
@@ -45,13 +45,13 @@ class Header extends React.Component {
                         <div className="col d-flex justify-content-center">
                             <ul className="my-auto d-flex justify-content-around">
                                 <li className="mr-5">
-                                    <Link to="/listing">Listing</Link>
+                                    <Link to="/les-projets">Les projets</Link>
                                 </li>
                                 <li className="mr-5">
-                                    <Link to="/info">Qui est nom du projet</Link>
+                                    <Link to="/info">Qui est Together</Link>
                                 </li>
                                 <li>
-                                    <Link to="/help">Soutenir nom du projet</Link>
+                                    <Link to="/help">Soutenir la plateforme</Link>
                                 </li>
                             </ul>
                         </div>

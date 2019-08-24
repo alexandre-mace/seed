@@ -1,4 +1,4 @@
-import { fetch } from '../../utils/dataAccess';
+import { fetch } from '../../services/dataAccess';
 
 export function error(error) {
   return { type: 'USER_DELETE_ERROR', error };

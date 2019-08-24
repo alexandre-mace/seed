@@ -1,6 +1,6 @@
 import React from 'react';
 import Layout from "../components/block/Layout";
-import ListItem from "../components/block/ListItem";
+import {List} from "../components/project";
 
 export default class ListingPage extends React.Component {
   constructor(props) {
@@ -13,28 +13,11 @@ export default class ListingPage extends React.Component {
     return (
       <>
         <Layout>
-          <div className="container">
-            <div className="row">
-              <div className="col-4 my-3">
-                <ListItem/>
-              </div>
-              <div className="col-4 my-3">
-                <ListItem/>
-              </div>
-              <div className="col-4 my-3">
-                <ListItem/>
-              </div>
-              <div className="col-4 my-3">
-                <ListItem/>
-              </div>
-              <div className="col-4 my-3">
-                <ListItem/>
-              </div>
-              <div className="col-4 my-3">
-                <ListItem/>
-              </div>
+            <div className="container">
+                <div className="row">
+                    <List {...this.props}/>
+                </div>
             </div>
-          </div>
         </Layout>
       </>
     )
