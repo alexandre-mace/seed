@@ -15,7 +15,13 @@ use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     attributes={
+ *         "formats"={"jsonld"},
+ *         "normalization_context"={"groups"={"user", "user:read"}},
+ *         "denormalizationContext"={"groups"={"user", "user:write"}}
+ *     },
+ * )
  * @ORM\Table(name="app_user")
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository" )
  * @UniqueEntity("email")
@@ -28,7 +34,7 @@ class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"project:read"})
+     * @Groups({"project", "user"})
      */
     private $id;
 
@@ -51,18 +57,39 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"project:read"})
+     * @Groups({"project", "user"})
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"user"})
      */
     private $lastName;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="author")
+     * @Groups({"user"})
+     */
+    private $messages;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Project", mappedBy="initiator")
+     * @Groups({"user"})
+     */
+    private $initiatedProjects;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Project", mappedBy="supporters")
+     * @Groups({"user"})
+     */
+    private $supportedProjects;
 
     public function __construct()
     {
+        $this->messages = new ArrayCollection();
+        $this->initiatedProjects = new ArrayCollection();
+        $this->supportedProjects = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -163,6 +190,96 @@ class User implements UserInterface
     public function setLastName(string $lastName): self
     {
         $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Message[]
+     */
+    public function getMessages(): Collection
+    {
+        return $this->messages;
+    }
+
+    public function addMessage(Message $message): self
+    {
+        if (!$this->messages->contains($message)) {
+            $this->messages[] = $message;
+            $message->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessage(Message $message): self
+    {
+        if ($this->messages->contains($message)) {
+            $this->messages->removeElement($message);
+            // set the owning side to null (unless already changed)
+            if ($message->getAuthor() === $this) {
+                $message->setAuthor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Project[]
+     */
+    public function getInitiatedProjects(): Collection
+    {
+        return $this->initiatedProjects;
+    }
+
+    public function addInitiatedProject(Project $initiatedProject): self
+    {
+        if (!$this->initiatedProjects->contains($initiatedProject)) {
+            $this->initiatedProjects[] = $initiatedProject;
+            $initiatedProject->setInitiator($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInitiatedProject(Project $initiatedProject): self
+    {
+        if ($this->initiatedProjects->contains($initiatedProject)) {
+            $this->initiatedProjects->removeElement($initiatedProject);
+            // set the owning side to null (unless already changed)
+            if ($initiatedProject->getInitiator() === $this) {
+                $initiatedProject->setInitiator(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Project[]
+     */
+    public function getSupportedProjects(): Collection
+    {
+        return $this->supportedProjects;
+    }
+
+    public function addSupportedProject(Project $supportedProject): self
+    {
+        if (!$this->supportedProjects->contains($supportedProject)) {
+            $this->supportedProjects[] = $supportedProject;
+            $supportedProject->addSupporter($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSupportedProject(Project $supportedProject): self
+    {
+        if ($this->supportedProjects->contains($supportedProject)) {
+            $this->supportedProjects->removeElement($supportedProject);
+            $supportedProject->removeSupporter($this);
+        }
 
         return $this;
     }
