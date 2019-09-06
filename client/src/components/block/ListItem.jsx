@@ -11,7 +11,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import Link from "react-router-dom/es/Link";
 import {Badge} from "@material-ui/core";
 import {AppContext} from "../../utils/AppContext";
-import array_search_recursive from "../../utils/array_search_recursive";
+import projectAlreadyBoostedChecker from "../../services/projectAlreadyBoostedChecker";
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -37,7 +37,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function ListItem(props) {
-  const classes = useStyles();
+    const classes = useStyles();
 
     const context = useContext(AppContext);
 
@@ -59,7 +59,7 @@ export default function ListItem(props) {
                 </Link>
 
                 <CardActions disableSpacing>
-                    <IconButton color={context.currentUser && array_search_recursive(props.item.id, context.currentUser.supportedProjects) ? 'secondary' : 'default'} aria-label="add to favorites" onClick={() => props.handleBoost(props.item)}>
+                    <IconButton color={context.currentUser && projectAlreadyBoostedChecker(props.item['@id'], context.currentUser.supportedProjects) ? 'secondary' : 'default'} aria-label="add to favorites" onClick={() => props.handleBoost(props.item)}>
                         <Badge badgeContent={props.item['likes']}>
                             <FavoriteIcon />
                         </Badge>

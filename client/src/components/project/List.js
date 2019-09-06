@@ -4,6 +4,12 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { list, reset } from '../../actions/project/list';
 import ListItem from "../block/ListItem";
+import redirectToLoginIfNotConnected from "../../utils/redirectToLoginIfNotConnected";
+import projectAlreadyBoostedChecker from "../../services/projectAlreadyBoostedChecker";
+import arrayRemove from "../../utils/arrayRemove";
+import {update as updateUser} from "../../actions/user/update";
+import {AppContext} from "../../utils/AppContext";
+import {update} from "../../actions/project/update";
 
 class List extends Component {
   static propTypes = {
@@ -15,6 +21,7 @@ class List extends Component {
     list: PropTypes.func.isRequired,
     reset: PropTypes.func.isRequired
   };
+  static contextType = AppContext;
 
   componentDidMount() {
     this.props.list(
@@ -35,14 +42,44 @@ class List extends Component {
     this.props.reset(this.props.eventSource);
   }
 
+  handleBoost = (item) => {
+    redirectToLoginIfNotConnected(this.props);
+    if (!projectAlreadyBoostedChecker(item['@id'], this.context.currentUser.supportedProjects)) {
+      let supportedProjects = this.context.currentUser.supportedProjects;
+      supportedProjects.push(item['@id']);
+      this.props.update(item, {likes: item['likes'] + 1})
+        .then(() => {
+          this.props.updateUser(this.context.currentUser, {supportedProjects: supportedProjects})
+          localStorage.setItem('currentUser', JSON.stringify(this.context.currentUser));
+          this.context.updateCurrentUser();
+          this.props.list(
+            this.props.match.params.page &&
+            decodeURIComponent(this.props.match.params.page)
+          );
+        })
+    } else {
+      this.props.update(item, {likes: item['likes'] - 1})
+        .then(() => {
+          this.props.updateUser(this.context.currentUser, {supportedProjects: arrayRemove(this.context.currentUser.supportedProjects, item['@id'])})
+            .then(() => {
+              const newUser = this.context.currentUser;
+              newUser.supportedProjects = arrayRemove(newUser.supportedProjects, item['@id'])
+              localStorage.setItem('currentUser', JSON.stringify(newUser));
+              this.context.updateCurrentUser();
+              this.props.list(
+                this.props.match.params.page &&
+                decodeURIComponent(this.props.match.params.page)
+              );
+            })
+        })
+    }
+  };
+
   render() {
     return (
       <>
         <div className="container">
           <div className="row">
-              {this.props.loading && (
-                  <div className="alert alert-info">Loading...</div>
-              )}
               {this.props.deletedItem && (
                   <div className="alert alert-success">
                       {this.props.deletedItem['@id']} deleted.
@@ -51,58 +88,15 @@ class List extends Component {
               {this.props.error && (
                   <div className="alert alert-danger">{this.props.error}</div>
               )}
+          </div>
+          <div className="row">
+            {this.props.retrieved &&
+            this.props.retrieved['hydra:member'].map(item => (
+              <ListItem key={item.id} item={item} handleBoost={() => this.handleBoost(item)}/>
+            ))}
 
-              {this.props.retrieved &&
-              this.props.retrieved['hydra:member'].map(item => (
-                  <ListItem item={item}/>
-              ))}
           </div>
         </div>
-
-        {/*<table className="table table-responsive table-striped table-hover">*/}
-          {/*<thead>*/}
-            {/*<tr>*/}
-              {/*<th>id</th>*/}
-              {/*<th>pitch</th>*/}
-              {/*<th>description</th>*/}
-              {/*<th>likes</th>*/}
-              {/*<th>discussions</th>*/}
-              {/*<th>initiator</th>*/}
-              {/*<th>supporters</th>*/}
-              {/*<th colSpan={2} />*/}
-            {/*</tr>*/}
-          {/*</thead>*/}
-          {/*<tbody>*/}
-            {/*{this.props.retrieved &&*/}
-              {/*this.props.retrieved['hydra:member'].map(item => (*/}
-                {/*<tr key={item['@id']}>*/}
-                  {/*<th scope="row">*/}
-                    {/*<Link to={`show/${encodeURIComponent(item['@id'])}`}>*/}
-                      {/*{item['@id']}*/}
-                    {/*</Link>*/}
-                  {/*</th>*/}
-                  {/*<td>{item['pitch']}</td>*/}
-                  {/*<td>{item['description']}</td>*/}
-                  {/*<td>{item['likes']}</td>*/}
-                  {/*<td>{this.renderLinks('discussions', item['discussions'])}</td>*/}
-                  {/*<td>{item['initiator']}</td>*/}
-                  {/*<td>{item['supporters']}</td>*/}
-                  {/*<td>*/}
-                    {/*<Link to={`show/${encodeURIComponent(item['@id'])}`}>*/}
-                      {/*<span className="fa fa-search" aria-hidden="true" />*/}
-                      {/*<span className="sr-only">Show</span>*/}
-                    {/*</Link>*/}
-                  {/*</td>*/}
-                  {/*<td>*/}
-                    {/*<Link to={`edit/${encodeURIComponent(item['@id'])}`}>*/}
-                      {/*<span className="fa fa-pencil" aria-hidden="true" />*/}
-                      {/*<span className="sr-only">Edit</span>*/}
-                    {/*</Link>*/}
-                  {/*</td>*/}
-                {/*</tr>*/}
-              {/*))}*/}
-          {/*</tbody>*/}
-        {/*</table>*/}
 
         {this.pagination()}
         </>
@@ -178,7 +172,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
   list: page => dispatch(list(page)),
-  reset: eventSource => dispatch(reset(eventSource))
+  reset: eventSource => dispatch(reset(eventSource)),
+  update: (item, values) => dispatch(update(item, values)),
+  updateUser: (item, values) => dispatch(updateUser(item, values))
 });
 
 export default connect(

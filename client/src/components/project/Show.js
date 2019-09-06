@@ -9,10 +9,10 @@ import CustomMaterialButton from "../../utils/CustomMaterialButton";
 import {Typography} from "@material-ui/core";
 import CustomBoostButton from "../../utils/CustomBoostButton";
 import redirectToLoginIfNotConnected from "../../utils/redirectToLoginIfNotConnected";
-import array_search_recursive from "../../utils/array_search_recursive";
 import {update as updateUser} from "../../actions/user/update";
 import arrayRemove from "../../utils/arrayRemove";
 import {AppContext} from "../../utils/AppContext";
+import projectAlreadyBoostedChecker from "../../services/projectAlreadyBoostedChecker";
 
 class Show extends Component {
   static propTypes = {
@@ -45,33 +45,35 @@ class Show extends Component {
 
   handleBoost = (item) => {
     redirectToLoginIfNotConnected(this.props);
-    if (!array_search_recursive(item.id, this.context.currentUser.supportedProjects)) {
+    if (!projectAlreadyBoostedChecker(item['@id'], this.context.currentUser.supportedProjects)) {
       let supportedProjects = this.context.currentUser.supportedProjects;
-      supportedProjects.push(item);
-      updateUser(this.context.currentUser, {supportedProjects: supportedProjects})
+      supportedProjects.push(item['@id']);
       this.props.update(item, {likes: item['likes'] + 1})
         .then(() => {
+          this.props.updateUser(this.context.currentUser, {supportedProjects: supportedProjects})
           localStorage.setItem('currentUser', JSON.stringify(this.context.currentUser));
           this.context.updateCurrentUser();
           this.props.retrieve(decodeURIComponent(this.props.match.params.id));
-        });
+        })
     } else {
-      updateUser(this.context.currentUser, {supportedProjects: arrayRemove(this.context.currentUser.supportedProjects, item['id'])})
       this.props.update(item, {likes: item['likes'] - 1})
         .then(() => {
-          const newUser = this.context.currentUser;
-          newUser.supportedProjects = arrayRemove(newUser.supportedProjects, item['id']);;
-          localStorage.setItem('currentUser', JSON.stringify(newUser));
-          this.context.updateCurrentUser();
-          this.props.retrieve(decodeURIComponent(this.props.match.params.id));
-        });
+          this.props.updateUser(this.context.currentUser, {supportedProjects: arrayRemove(this.context.currentUser.supportedProjects, item['@id'])})
+            .then(() => {
+              const newUser = this.context.currentUser;
+              newUser.supportedProjects = arrayRemove(newUser.supportedProjects, item['@id'])
+              localStorage.setItem('currentUser', JSON.stringify(newUser));
+              this.context.updateCurrentUser();
+              this.props.retrieve(decodeURIComponent(this.props.match.params.id));
+            })
+        })
     }
   };
+
   render() {
     if (this.props.deleted) return <Redirect to=".." />;
 
     const item = this.props.retrieved;
-    console.log(this.context.currentUser)
 
     return (
         <div className="container">
@@ -180,7 +182,8 @@ const mapDispatchToProps = dispatch => ({
   retrieve: id => dispatch(retrieve(id)),
   del: item => dispatch(del(item)),
   reset: eventSource => dispatch(reset(eventSource)),
-  update: (item, values) => dispatch(update(item, values))
+  update: (item, values) => dispatch(update(item, values)),
+  updateUser: (item, values) => dispatch(updateUser(item, values))
 });
 
 export default connect(

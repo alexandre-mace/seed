@@ -29,7 +29,6 @@ class Layout extends React.Component {
     }
 
     updateCurrentUser = () => {
-        console.log(authentication.currentUserValue)
         this.setState({
             currentUser: authentication.currentUserValue
         })
