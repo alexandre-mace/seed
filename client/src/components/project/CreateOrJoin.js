@@ -16,12 +16,12 @@ class CreateOrJoin extends Component {
                 <div className="row">
                     <div className="col text-center">
                         <Link to="initier-un-projet">
-                          <CustomMaterialButton text={'Initier un projet'} color={'primary'}/>
+                          <CustomMaterialButton size={'large'} text={'Initier un projet'} color={'primary'}/>
                         </Link>
                     </div>
                     <div className="col text-center">
                         <Link to="les-projets">
-                          <CustomMaterialButton text={'Les projets'} color={'primary'}/>
+                          <CustomMaterialButton size={'large'} text={'Voir les projets'} color={'primary'}/>
                         </Link>
                     </div>
                 </div>

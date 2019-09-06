@@ -14,7 +14,7 @@ export default function CustomMaterialButton(props) {
   const classes = useStyles();
 
   return (
-      <Button type={props.type ? props.type : 'button'} variant="contained" color={props.color} className={classes.button}>
+      <Button type={props.type ? props.type : 'button'} variant="contained" color={props.color} className={classes.button} {...props}>
         {props.text}
       </Button>
   );
