@@ -18,12 +18,13 @@ export function success(retrieved) {
   return { type: 'PROJECT_LIST_SUCCESS', retrieved };
 }
 
-export function list(page = '/projects') {
+export function list(page = '/projects', customQuery = '') {
+  console.log(customQuery)
   return dispatch => {
     dispatch(loading(true));
     dispatch(error(''));
-
-    fetch(page)
+  console.log(page + customQuery)
+    fetch(page + customQuery)
       .then(response =>
         response
           .json()

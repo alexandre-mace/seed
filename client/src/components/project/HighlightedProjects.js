@@ -81,7 +81,7 @@ class HighlightedProjects extends Component {
       <div className="container">
         <div className="row">
           {this.props.retrieved &&
-          this.props.retrieved['hydra:member'].map(item => (
+          this.props.retrieved['hydra:member'].slice(0,3).map(item => (
             <ListItem key={item.id} item={item} handleBoost={() => this.handleBoost(item)}/>
           ))}
 
@@ -157,8 +157,10 @@ const mapStateToProps = state => {
   return { retrieved, loading, error, eventSource, deletedItem };
 };
 
+const customQuery = '?order[likes]=desc';
+
 const mapDispatchToProps = dispatch => ({
-  list: page => dispatch(list(page)),
+  list: page => dispatch(list(page, customQuery)),
   reset: eventSource => dispatch(reset(eventSource)),
   update: (item, values) => dispatch(update(item, values)),
   updateUser: (item, values) => dispatch(updateUser(item, values))
