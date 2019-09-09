@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import PropTypes from 'prop-types';
 import deburr from 'lodash/deburr';
 import Downshift from 'downshift';
@@ -7,43 +7,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import InputBase from '@material-ui/core/InputBase';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
-
-const suggestions = [
-  { label: 'Afghanistan' },
-  { label: 'Aland Islands' },
-  { label: 'Albania' },
-  { label: 'Algeria' },
-  { label: 'American Samoa' },
-  { label: 'Andorra' },
-  { label: 'Angola' },
-  { label: 'Anguilla' },
-  { label: 'Antarctica' },
-  { label: 'Antigua and Barbuda' },
-  { label: 'Argentina' },
-  { label: 'Armenia' },
-  { label: 'Aruba' },
-  { label: 'Australia' },
-  { label: 'Austria' },
-  { label: 'Azerbaijan' },
-  { label: 'Bahamas' },
-  { label: 'Bahrain' },
-  { label: 'Bangladesh' },
-  { label: 'Barbados' },
-  { label: 'Belarus' },
-  { label: 'Belgium' },
-  { label: 'Belize' },
-  { label: 'Benin' },
-  { label: 'Bermuda' },
-  { label: 'Bhutan' },
-  { label: 'Bolivia, Plurinational State of' },
-  { label: 'Bonaire, Sint Eustatius and Saba' },
-  { label: 'Bosnia and Herzegovina' },
-  { label: 'Botswana' },
-  { label: 'Bouvet Island' },
-  { label: 'Brazil' },
-  { label: 'British Indian Ocean Territory' },
-  { label: 'Brunei Darussalam' },
-];
+import {extractHubURL, fetch} from "../services/dataAccess";
+import Link from "react-router-dom/es/Link";
 
 function renderInput(inputProps) {
   const { InputProps, classes, ref, ...other } = inputProps;
@@ -79,17 +44,20 @@ function renderSuggestion(suggestionProps) {
   const isSelected = (selectedItem || '').indexOf(suggestion.label) > -1;
 
   return (
-    <MenuItem
-      {...itemProps}
-      key={suggestion.label}
-      selected={isHighlighted}
-      component="div"
-      style={{
-        fontWeight: isSelected ? 500 : 400,
-      }}
-    >
-      {suggestion.label}
-    </MenuItem>
+    <Link to={`/les-projets/${encodeURIComponent(suggestion['@id'])}`}>
+      <MenuItem
+        {...itemProps}
+        key={suggestion.label}
+        selected={isHighlighted}
+        component="div"
+        style={{
+          fontWeight: isSelected ? 500 : 400,
+        }}
+      >
+        {suggestion.label}
+      </MenuItem>
+    </Link>
+
   );
 }
 
@@ -103,23 +71,36 @@ renderSuggestion.propTypes = {
   }).isRequired,
 };
 
-function getSuggestions(value, { showEmpty = false } = {}) {
-  const inputValue = deburr(value.trim()).toLowerCase();
-  const inputLength = inputValue.length;
-  let count = 0;
+function getSuggestions(value, setSuggestions, inputValueState, setInputValueState, { showEmpty = false } = {}) {
+  if (value !== inputValueState) {
+    const inputValue = deburr(value.trim());
+    const inputLength = inputValue.length;
+    let count = 0;
+    setInputValueState(inputValue)
 
-  return inputLength === 0 && !showEmpty
-    ? []
-    : suggestions.filter(suggestion => {
-      const keep =
-        count < 5 && suggestion.label.slice(0, inputLength).toLowerCase() === inputValue;
+    fetch(`/projects?pitch=${inputValue}`)
+      .then(response =>
+        response
+          .json()
+          .then(retrieved => {
+            let projectSuggestions = Array.from(retrieved['hydra:member'], project => { return { label: project.pitch, '@id': project['@id'] } })
+            if (inputLength !== 0) {
+              projectSuggestions.filter(suggestion => {
+                const keep =
+                  count < 5 && suggestion.label.slice(0, inputLength).toLowerCase() === inputValue;
 
-      if (keep) {
-        count += 1;
-      }
-
-      return keep;
-    });
+                if (keep) {
+                  count += 1;
+                }
+              });
+              setSuggestions(projectSuggestions);
+            } else {
+              setSuggestions([]);
+            }
+            }
+          )
+      );
+  }
 }
 
 const useStyles = makeStyles(theme => ({
@@ -213,6 +194,12 @@ const useStyles = makeStyles(theme => ({
 
 export default function CustomSearchBar() {
   const classes = useStyles();
+  const [suggestions, setSuggestions] = useState(
+    []
+  );
+  const [inputValueState, setInputValueState] = useState(
+    ''
+  );
 
   return (
     <div className={classes.root}>
@@ -234,29 +221,30 @@ export default function CustomSearchBar() {
           return (
             <div className={classes.container}>
               <div className={classes.search}>
-                    <div className={classes.searchIcon}>
-                      <SearchIcon />
-                    </div>
-                    {renderInput({
-                      fullWidth: true,
-                      classes,
-                      inputlabelprops: getLabelProps({ shrink: true }),
-                      InputProps: { onBlur, onFocus },
-                      inputProps,
-                    })}
+                <div className={classes.searchIcon}>
+                  <SearchIcon />
+                </div>
+                {renderInput({
+                  fullWidth: true,
+                  classes,
+                  inputlabelprops: getLabelProps({ shrink: true }),
+                  InputProps: { onBlur, onFocus },
+                  inputProps,
+                })}
               </div>
 
               <div {...getMenuProps()}>
                 {isOpen ? (
                   <Paper className={classes.paper} square>
-                    {getSuggestions(inputValue).map((suggestion, index) =>
+                    {getSuggestions(inputValue, setSuggestions, inputValueState, setInputValueState)}
+                    {suggestions.map((suggestion, index) =>
                         renderSuggestion({
                           suggestion,
                           index,
                           itemProps: getItemProps({ item: suggestion.label }),
                           highlightedIndex,
                           selectedItem,
-                        }),
+                        })
                     )}
                   </Paper>
                 ) : null}
