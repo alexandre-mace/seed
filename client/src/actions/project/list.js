@@ -19,11 +19,9 @@ export function success(retrieved) {
 }
 
 export function list(page = '/projects', customQuery = '') {
-  console.log(customQuery)
   return dispatch => {
     dispatch(loading(true));
     dispatch(error(''));
-  console.log(page + customQuery)
     fetch(page + customQuery)
       .then(response =>
         response
