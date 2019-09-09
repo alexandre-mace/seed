@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 
 /**
  * @ApiResource(
@@ -20,6 +21,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
  *     },
  * )
  * @ApiFilter(OrderFilter::class, properties={"likes"}, arguments={"orderParameterName"="order"})
+ * @ApiFilter(SearchFilter::class, properties={"pitch": "partial"})
  * @ORM\Entity(repositoryClass="App\Repository\ProjectRepository")
  */
 class Project
