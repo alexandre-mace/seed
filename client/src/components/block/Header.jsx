@@ -47,9 +47,6 @@ class Header extends React.Component {
                                 <li className="mr-5">
                                     <Link to="/les-projets">Les projets</Link>
                                 </li>
-                                <li className="mr-5">
-                                    <Link to="/info">Qui est Together</Link>
-                                </li>
                                 <li>
                                     <Link to="/help">Soutenir la plateforme</Link>
                                 </li>
