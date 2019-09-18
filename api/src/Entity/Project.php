@@ -77,6 +77,12 @@ class Project
      */
     private $supporters;
 
+    /**
+     * @ORM\Column(type="json_array", nullable=true)
+     * @Groups({"project"})
+     */
+    private $categories;
+
     public function __construct()
     {
         $this->discussions = new ArrayCollection();
@@ -187,6 +193,18 @@ class Project
         if ($this->supporters->contains($supporter)) {
             $this->supporters->removeElement($supporter);
         }
+
+        return $this;
+    }
+
+    public function getCategories()
+    {
+        return $this->categories;
+    }
+
+    public function setCategories($categories): self
+    {
+        $this->categories = $categories;
 
         return $this;
     }
