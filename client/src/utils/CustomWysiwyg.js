@@ -3,7 +3,6 @@ import { EditorState, convertToRaw } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import draftToHtml from 'draftjs-to-html';
 
-
 export default class CustomWysiwyg extends Component {
     state = {
         editorState: EditorState.createEmpty(),
@@ -26,7 +25,7 @@ export default class CustomWysiwyg extends Component {
                     onEditorStateChange={this.onEditorStateChange}
                 />
                 <textarea
-                    className={'invisible'}
+                    className={'invisible no-width'}
                     name={'description'}
                     id={'project_description'}
                     disabled

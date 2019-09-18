@@ -13,6 +13,7 @@ import {update as updateUser} from "../../actions/user/update";
 import arrayRemove from "../../utils/arrayRemove";
 import {AppContext} from "../../utils/AppContext";
 import projectAlreadyBoostedChecker from "../../services/projectAlreadyBoostedChecker";
+import Chip from "@material-ui/core/Chip";
 
 class Show extends Component {
   static propTypes = {
@@ -99,9 +100,10 @@ class Show extends Component {
               <Link to="/les-projets">
                 <CustomMaterialButton color={'primary'} text={'Retour aux projets'}/>
               </Link>
+              <div className="mb-3"></div>
               {item && (
                 <>
-                  <Typography variant="h1" component="h1" gutterBottom>
+                  <Typography variant="h2" component="h2" gutterBottom>
                     {item.pitch}
                   </Typography>
                   <div className="d-flex justify-content-between align-content-center">
@@ -111,6 +113,16 @@ class Show extends Component {
                     <div className="d-flex">
                       <CustomBoostButton item={item} user={this.context.currentUser} handleBoost={() => this.handleBoost(item)}/>
                     </div>
+                  </div>
+                  <div className="d-flex flex-wrap">
+                    {item.categories.map(category => (
+                      <div className="mr-2 mb-2">
+                        <Chip
+                          label={category}
+                          color="primary"
+                        />
+                      </div>
+                    ))}
                   </div>
                   <Typography variant={'h6'} gutterBottom>
                     {item.likes} personnes soutiennent ce projet

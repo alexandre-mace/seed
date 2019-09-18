@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import InitiateForm from './InitiateForm';
 import { create, reset } from '../../actions/project/create';
 import Layout from "../../components/block/Layout";
+import {Typography} from "@material-ui/core";
 
 class Initiate extends Component {
     static propTypes = {
@@ -27,44 +28,53 @@ class Initiate extends Component {
                 />
             );
 
-        return (
-            <Layout>
-                <div className="container">
-                    <div className="row">
-                        <div className="col">
-                            {this.props.loading && (
-                                <div className="alert alert-info" role="status">
-                                    Loading...
-                                </div>
-                            )}
-                            {this.props.error && (
-                                <div className="alert alert-danger" role="alert">
-                                    <span className="fa fa-exclamation-triangle" aria-hidden="true" />{' '}
-                                    {this.props.error}
-                                </div>
-                            )}
+      return (
+        <Layout>
+          <div className="container">
+            <div className="row">
+              <div className="col">
+                <Typography variant="h4" component="h4" gutterBottom>
+                  Initier un projet
+                </Typography>
+              </div>
+            </div>
+          </div>
+          <div className="container">
+            <div className="row">
+              <div className="col">
+                {this.props.loading && (
+                  <div className="alert alert-info" role="status">
+                    Loading...
+                  </div>
+                )}
+                {this.props.error && (
+                  <div className="alert alert-danger" role="alert">
+                    <span className="fa fa-exclamation-triangle" aria-hidden="true" />{' '}
+                    {this.props.error}
+                  </div>
+                )}
 
-                            <InitiateForm onSubmit={this.props.create} values={this.props.item} />
-                        </div>
-                    </div>
-                </div>
+                <InitiateForm onSubmit={this.props.create} values={this.props.item} />
+              </div>
+            </div>
+          </div>
 
-            </Layout>
-        );
+        </Layout>
+      );
     }
 }
 
 const mapStateToProps = state => {
-    const { created, error, loading } = state.project.create;
-    return { created, error, loading };
+  const { created, error, loading } = state.project.create;
+  return { created, error, loading };
 };
 
 const mapDispatchToProps = dispatch => ({
-    create: values => dispatch(create(values)),
-    reset: () => dispatch(reset())
+  create: values => dispatch(create(values)),
+  reset: () => dispatch(reset())
 });
 
 export default connect(
-    mapStateToProps,
-    mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(Initiate);

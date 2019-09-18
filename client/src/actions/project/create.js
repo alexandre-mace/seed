@@ -15,8 +15,15 @@ export function success(created) {
 }
 
 export function create(values) {
+
   values['description'] = document.getElementById('project_description').value;
-  console.log(values);
+  const categories = [];
+  for (let [key, value] of Object.entries(values)) {
+    if (key.startsWith('category')) {
+      categories.push(key.replace('category-', ''));
+    }
+  }
+  values.categories = categories;
   return dispatch => {
     dispatch(loading(true));
     values.initiator = authentication.currentUserValue['@id'];

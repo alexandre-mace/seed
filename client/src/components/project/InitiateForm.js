@@ -3,6 +3,10 @@ import { Field, reduxForm } from 'redux-form';
 import PropTypes from 'prop-types';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import CustomWysiwyg from "../../utils/CustomWysiwyg";
+import TextField from '@material-ui/core/TextField';
+import CustomMaterialButton from "../../utils/CustomMaterialButton";
+import {FormControlLabel} from "@material-ui/core";
+import Checkbox from "@material-ui/core/Checkbox";
 
 class Form extends Component {
     static propTypes = {
@@ -27,52 +31,100 @@ class Form extends Component {
             <div className={`form-group`}>
                 <label
                     htmlFor={`project_${data.input.name}`}
-                    className="form-control-label"
+                    className="form-control-label d-none"
                 >
                     {data.input.name}
                 </label>
-                <input
+                <TextField
                     {...data.input}
                     type={data.type}
                     step={data.step}
                     required={data.required}
+                    label={data.label}
                     placeholder={data.placeholder}
                     id={`project_${data.input.name}`}
                 />
-                {isInvalid && <div className="invalid-feedback">{data.meta.error}</div>}
+
+              {isInvalid && <div className="invalid-feedback">{data.meta.error}</div>}
             </div>
         );
     };
 
-    render() {
-        return (
-            <form onSubmit={this.props.handleSubmit}>
-                <Field
-                    component={this.renderField}
-                    name="pitch"
-                    type="text"
-                    placeholder=""
-                    required={true}
-                />
-                <Field
-                    id={`project_description`}
-                    component={CustomWysiwyg}
-                    name="description"
-                    type="text"
-                    placeholder=""
-                    required={true}
-                />
+    renderCheckbox = ({ input, label }) => (
+      <div>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={input.value ? true : false}
+              onChange={input.onChange}
+            />
+          }
+          label={label}
+        />
+      </div>
+    )
 
-                <button type="submit" className="btn btn-success">
-                    Initier
-                </button>
-            </form>
+    render() {
+      const categories = [
+        'Solidarité',
+        'Écologie',
+        'Mode & design',
+        'Artisanat',
+        'Alimentation',
+        'Agriculture',
+        'Musique',
+        'Sport',
+        'Technologie',
+        'Art & photo',
+        'Patrimoine',
+        'Livres',
+        'BD',
+        'Santé & éducation',
+        'Films & vidéo',
+        'Jeux',
+        'Journalisme',
+        'Théâtre & danse'
+      ];
+
+        return (
+          <form onSubmit={this.props.handleSubmit} className={'d-flex flex-column'}>
+            <Field
+              component={this.renderField}
+              name="pitch"
+              type="text"
+              placeholder=""
+              label="Pitch"
+              required={true}
+            />
+            <div className="mt-3">
+              <Field
+                component={CustomWysiwyg}
+                name="description"
+                type="text"
+                placeholder=""
+                label="Description complète"
+                required={true}
+              />
+            </div>
+
+            <div className="d-flex flex-wrap mt-3">
+              {categories.map(categorie => (
+                <div>
+                  <Field name={'category-' + categorie} component={this.renderCheckbox} label={categorie} />
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-3">
+              <CustomMaterialButton type="submit" color={'primary'} text={'Initier'}/>
+            </div>
+          </form>
         );
     }
 }
 
 export default reduxForm({
-    form: 'project',
-    enableReinitialize: true,
-    keepDirtyOnReinitialize: true
+  form: 'project',
+  enableReinitialize: true,
+  keepDirtyOnReinitialize: true
 })(Form);
