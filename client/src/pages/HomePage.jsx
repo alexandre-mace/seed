@@ -2,6 +2,7 @@ import React from 'react';
 import Layout from "../components/block/Layout";
 import CreateOrJoin from "../components/project/CreateOrJoin";
 import HighlightedProjects from "../components/project/HighlightedProjects";
+import {Typography} from "@material-ui/core";
 
 export default class HomePage extends React.Component {
     constructor(props) {
@@ -13,10 +14,19 @@ export default class HomePage extends React.Component {
     render() {
         return (
             <>
-            <Layout>
-                <HighlightedProjects {...this.props} />
-                <CreateOrJoin/>
-            </Layout>
+                <Layout>
+                    <div className="container">
+                        <div className="row">
+                            <div className="col">
+                                <Typography variant="h4" component="h4" gutterBottom>
+                                    Les plus populaires
+                                </Typography>
+                            </div>
+                        </div>
+                    </div>
+                    <HighlightedProjects {...this.props} />
+                    <CreateOrJoin/>
+                </Layout>
             </>
         )
     }

@@ -13,18 +13,23 @@ export default class HelpPage extends React.Component {
   render() {
     return (
       <>
-        <Layout>
-          <div className="container">
-            <div className="row">
-              <div className="col">
-                <Typography variant="body1" gutterBottom>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis dolore doloribus exercitationem illo qui repellendus repudiandae similique suscipit ut voluptate. Dignissimos ea nemo possimus praesentium quibusdam quo sed vel voluptatum.
-                </Typography>
-                <CustomMaterialButton color={'primary'} text={'Faire un don'}/>
+          <Layout>
+              <div className="container">
+                  <div className="row">
+                      <div className="col-12">
+                          <Typography variant="h2" component="h2" gutterBottom>
+                              Soutenir la plateforme
+                          </Typography>
+                      </div>
+                      <div className="col">
+                          <Typography variant="body1" gutterBottom>
+                              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis dolore doloribus exercitationem illo qui repellendus repudiandae similique suscipit ut voluptate. Dignissimos ea nemo possimus praesentium quibusdam quo sed vel voluptatum.
+                          </Typography>
+                          <CustomMaterialButton color={'primary'} text={'Faire un don'}/>
+                      </div>
+                  </div>
               </div>
-            </div>
-          </div>
-        </Layout>
+          </Layout>
       </>
     )
   }

@@ -164,27 +164,27 @@ const useStyles = makeStyles(theme => ({
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('sm')]: {
-      width: 150,
+      width: 95,
       '&:focus': {
         width: 300,
       },
     },
     [theme.breakpoints.up('md')]: {
-      width: 150,
+      width: 95,
       '&:focus': {
         width: 400,
       },
     },
     [theme.breakpoints.up('lg')]: {
-      width: 150,
+      width: 95,
       '&:focus': {
-        width: 600,
+        width: 400,
       },
     },
     [theme.breakpoints.up('xl')]: {
-      width: 150,
+      width: 95,
       '&:focus': {
-        width: 900,
+        width: 600,
       },
     },
     border: '1px solid rgba(0,0,0,0.14)',

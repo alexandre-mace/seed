@@ -14,13 +14,18 @@ export default class InfoPage extends React.Component {
       <>
         <Layout>
           <div className="container">
-            <div className="row">
-              <div className="col">
-                <Typography variant="body1" gutterBottom>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis dolore doloribus exercitationem illo qui repellendus repudiandae similique suscipit ut voluptate. Dignissimos ea nemo possimus praesentium quibusdam quo sed vel voluptatum.
-                </Typography>
+              <div className="row">
+                  <div className="col-12">
+                      <Typography variant="h2" component="h2" gutterBottom>
+                          Qui est Together ?
+                      </Typography>
+                  </div>
+                  <div className="col">
+                      <Typography variant="body1" gutterBottom>
+                          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis dolore doloribus exercitationem illo qui repellendus repudiandae similique suscipit ut voluptate. Dignissimos ea nemo possimus praesentium quibusdam quo sed vel voluptatum.
+                      </Typography>
+                  </div>
               </div>
-            </div>
           </div>
         </Layout>
       </>

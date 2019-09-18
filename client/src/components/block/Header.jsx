@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link }from 'react-router-dom';
-import './Header.scss'
 import { connect } from 'react-redux';
 import { authentication } from '../../services/authentication';
 import Typography from '@material-ui/core/Typography';
@@ -8,12 +7,6 @@ import CustomSearchBar from "../../utils/CustomSearchBar";
 import CustomMaterialButton from "../../utils/CustomMaterialButton";
 
 class Header extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-        };
-    }
-
     handleLogout = () => {
         authentication.logout();
         this.props.updateCurrentUser();
@@ -21,60 +14,59 @@ class Header extends React.Component {
 
     render() {
         return (
-            <>
-                <div className="container-fluid">
-                    <div className="row py-3">
-                        <div className="col d-flex align-items-center flex-grow-high">
-                            {this.props.currentUser ? (
-                                <Link to="/">
-                                    <Typography variant="h6" noWrap>
-                                        Bonjour {this.props.currentUser.firstName}
-                                    </Typography>
-                                </Link>
-                            ) : (
-                                <Link to="/">
-                                    <Typography variant="h6" noWrap>
-                                        Together
-                                    </Typography>
-                                </Link>
-                            )}
-                        </div>
-                        <div className="px-3">
-                            <CustomSearchBar/>
-                        </div>
-                        <div className="col d-flex justify-content-center">
-                            <ul className="my-auto d-flex justify-content-around">
-                                <li className="mr-5">
-                                    <Link to="/les-projets">Les projets</Link>
-                                </li>
-                                <li>
-                                    <Link to="/help">Soutenir la plateforme</Link>
-                                </li>
-                            </ul>
-                        </div>
+            <div className="container-fluid">
+                <div className="row py-3">
+                    <div className="col d-flex align-items-center ">
                         {this.props.currentUser ? (
-                            <div className="col d-flex">
-                                <div className="d-flex ml-auto">
-                                    <div onClick={this.handleLogout}>
-                                        <CustomMaterialButton text={'Se déconnecter'} color={'secondary'} />
-                                    </div>
-                                </div>
+                            <Link to="/">
+                                <Typography variant="h6" noWrap>
+                                    Bonjour {this.props.currentUser.firstName}
+                                </Typography>
+                            </Link>
+                        ) : (
+                            <Link to="/">
+                                <Typography variant="h6" noWrap>
+                                    Together
+                                </Typography>
+                            </Link>
+                        )}
+                    </div>
+                    <div className="col flex-grow-high">
+                        <Link to="initier-un-projet">
+                            <CustomMaterialButton text={'Initier un projet'} color={'primary'}/>
+                        </Link>
+                    </div>
+                    <div className="col">
+                        <CustomSearchBar/>
+                    </div>
+
+                    <ul className="col d-flex">
+                        <li className="col pl-0 d-flex align-content-center">
+                            <div className="m-auto">
+                                <Link to="/les-projets">Les projets</Link>
+                            </div>
+                        </li>
+                        <li className="col pr-0 d-flex align-content-center">
+                            <div className="m-auto">
+                                <Link to="/help">Soutenir la plateforme</Link>
+                            </div>
+
+                        </li>
+                    </ul>
+
+                    <div className="col d-flex">
+                        {this.props.currentUser ? (
+                            <div onClick={this.handleLogout}>
+                                <CustomMaterialButton text={'Se déconnecter'} color={'secondary'} />
                             </div>
                         ) : (
-                            <>
-                                <div className="col d-flex">
-                                    <div className="d-flex ml-auto">
-                                        <Link to="/se-connecter">
-                                            <CustomMaterialButton text={'Se connecter'} color={'primary'}/>
-                                        </Link>
-                                    </div>
-                                </div>
-                            </>
+                            <Link to="/se-connecter">
+                                <CustomMaterialButton text={'Se connecter'} color={'primary'}/>
+                            </Link>
                         )}
-
                     </div>
                 </div>
-            </>
+            </div>
         )
     }
 }

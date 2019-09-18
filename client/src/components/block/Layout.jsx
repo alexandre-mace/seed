@@ -36,21 +36,15 @@ class Layout extends React.Component {
 
     render() {
         return(
-
             <AppContext.Provider value={{ updateCurrentUser: () => this.updateCurrentUser(), currentUser: this.state.currentUser }}>
                 <ThemeProvider theme={theme}>
                     <Header updateCurrentUser={() => this.updateCurrentUser()} currentUser={this.state.currentUser} {...this.props} />
-                    <div className="container">
-                        <div className="row">
-                            <div className="my-4"></div>
-                        </div>
-                    </div>
+                    <div className="my-4"></div>
                     {this.props.children}
                     <Footer {...this.props}/>
                 </ThemeProvider>
             </AppContext.Provider>
-
-    );
+        );
     }
 }
 const mapStateToProps = state => ({

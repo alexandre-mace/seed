@@ -49,3 +49,14 @@ time, mark, audio, video {
 button:focus {
     outline: none;
 }
+.rdw-editor-main {
+    border: 2px solid white;
+    background-color: white
+}
+.no-width {
+    width: 0px;
+    position: absolute;
+    z-index: -1000;
+    left: -9999px;
+    height: 0px;
+}

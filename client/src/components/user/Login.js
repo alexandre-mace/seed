@@ -60,9 +60,7 @@ class Login extends React.Component {
                                   <CustomMaterialButton type="submit" text={'Se connecter'} color={'primary'}/>
                                 )}
                             </div>
-                            {status &&
-                            <div className={'alert alert-danger'}>{status}</div>
-                            }
+
                         </Form>
                     )}
                 />
