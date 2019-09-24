@@ -1,5 +1,6 @@
 import { SubmissionError } from 'redux-form';
 import { fetch } from '../../services/dataAccess';
+import {authentication} from "../../services/authentication";
 
 export function error(error) {
   return { type: 'MESSAGE_CREATE_ERROR', error };
@@ -14,6 +15,8 @@ export function success(created) {
 }
 
 export function create(values) {
+  values.author = authentication.currentUserValue['@id'];
+
   return dispatch => {
     dispatch(loading(true));
 
