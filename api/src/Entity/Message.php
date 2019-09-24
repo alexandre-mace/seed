@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -22,20 +23,22 @@ class Message
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="messages")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"project"})
      */
     private $author;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Discussion", inversedBy="messages")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Topic", inversedBy="messages")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $discussion;
+    private $topic;
 
     /**
      * @ORM\Column(type="text")
      * @Assert\NotNull
      * @Assert\NotBlank
      * @Assert\Type("string")
+     * @Groups({"project"})
      */
     private $content;
 
@@ -56,14 +59,14 @@ class Message
         return $this;
     }
 
-    public function getDiscussion(): ?Discussion
+    public function getTopic(): ?Topic
     {
-        return $this->discussion;
+        return $this->topic;
     }
 
-    public function setDiscussion(?Discussion $discussion): self
+    public function setTopic(?Topic $topic): self
     {
-        $this->discussion = $discussion;
+        $this->topic = $topic;
 
         return $this;
     }

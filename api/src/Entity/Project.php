@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Behavior\Timestampable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -26,11 +27,12 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  */
 class Project
 {
+    use Timestampable;
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"project", "user"})
+     * @Groups({"project"})
      */
     private $id;
 
@@ -59,12 +61,6 @@ class Project
     private $likes = 0;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Discussion", mappedBy="project")
-     * @Groups({"project"})
-     */
-    private $discussions;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="initiatedProjects")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"project"})
@@ -83,9 +79,15 @@ class Project
      */
     private $categories;
 
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\Forum", mappedBy="project", cascade={"persist", "remove"})
+     * @Groups({"project"})
+     */
+    private $forum;
+
     public function __construct()
     {
-        $this->discussions = new ArrayCollection();
+        $this->topics = new ArrayCollection();
         $this->supporters = new ArrayCollection();
     }
     public function getId(): ?int
@@ -124,37 +126,6 @@ class Project
     public function setLikes(int $likes): self
     {
         $this->likes = $likes;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Discussion[]
-     */
-    public function getDiscussions(): Collection
-    {
-        return $this->discussions;
-    }
-
-    public function addDiscussion(Discussion $discussion): self
-    {
-        if (!$this->discussions->contains($discussion)) {
-            $this->discussions[] = $discussion;
-            $discussion->setProject($this);
-        }
-
-        return $this;
-    }
-
-    public function removeDiscussion(Discussion $discussion): self
-    {
-        if ($this->discussions->contains($discussion)) {
-            $this->discussions->removeElement($discussion);
-            // set the owning side to null (unless already changed)
-            if ($discussion->getProject() === $this) {
-                $discussion->setProject(null);
-            }
-        }
 
         return $this;
     }
@@ -205,6 +176,23 @@ class Project
     public function setCategories($categories): self
     {
         $this->categories = $categories;
+
+        return $this;
+    }
+
+    public function getForum(): ?Forum
+    {
+        return $this->forum;
+    }
+
+    public function setForum(Forum $forum): self
+    {
+        $this->forum = $forum;
+
+        // set the owning side of the relation if necessary
+        if ($this !== $forum->getProject()) {
+            $forum->setProject($this);
+        }
 
         return $this;
     }

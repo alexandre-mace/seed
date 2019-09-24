@@ -6,13 +6,13 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ApiResource()
- * @ORM\Entity(repositoryClass="App\Repository\DiscussionRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\TopicRepository")
  */
-class Discussion
+class Topic
 {
     /**
      * @ORM\Id()
@@ -23,6 +23,7 @@ class Discussion
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="topic")
+     * @Groups({"project"})
      */
     private $messages;
 
@@ -31,6 +32,12 @@ class Discussion
      * @ORM\JoinColumn(nullable=false)
      */
     private $forum;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"project"})
+     */
+    private $title;
 
     public function __construct()
     {
@@ -54,7 +61,7 @@ class Discussion
     {
         if (!$this->messages->contains($message)) {
             $this->messages[] = $message;
-            $message->setDiscussion($this);
+            $message->setTopic($this);
         }
 
         return $this;
@@ -65,8 +72,8 @@ class Discussion
         if ($this->messages->contains($message)) {
             $this->messages->removeElement($message);
             // set the owning side to null (unless already changed)
-            if ($message->getDiscussion() === $this) {
-                $message->setDiscussion(null);
+            if ($message->getTopic() === $this) {
+                $message->setTopic(null);
             }
         }
 
@@ -81,6 +88,18 @@ class Discussion
     public function setForum(?Forum $forum): self
     {
         $this->forum = $forum;
+
+        return $this;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title): self
+    {
+        $this->title = $title;
 
         return $this;
     }
