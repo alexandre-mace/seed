@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import PropTypes from 'prop-types';
+import TextField from '@material-ui/core/TextField';
+import CustomMaterialButton from "../../utils/CustomMaterialButton";
 
 class Form extends Component {
   static propTypes = {
@@ -25,14 +27,15 @@ class Form extends Component {
       <div className={`form-group`}>
         <label
           htmlFor={`message_${data.input.name}`}
-          className="form-control-label"
+          className="form-control-label d-none"
         >
           {data.input.name}
         </label>
-        <input
+        <TextField
           {...data.input}
           type={data.type}
           step={data.step}
+          label={data.label}
           required={data.required}
           placeholder={data.placeholder}
           id={`message_${data.input.name}`}
@@ -44,30 +47,20 @@ class Form extends Component {
 
   render() {
     return (
-      <form onSubmit={this.props.handleSubmit}>
-        <Field
-          component={this.renderField}
-          name="author"
-          type="text"
-          placeholder=""
-        />
-        <Field
-          component={this.renderField}
-          name="discussion"
-          type="text"
-          placeholder=""
-        />
-        <Field
-          component={this.renderField}
-          name="content"
-          type="text"
-          placeholder=""
-          required={true}
-        />
-
-        <button type="submit" className="btn btn-success">
-          Submit
-        </button>
+      <form onSubmit={this.props.handleSubmit} className="d-flex align-items-center">
+        <div className="w-100">
+          <Field
+            component={this.renderField}
+            name="content"
+            type="text"
+            placeholder=""
+            label="Ajouter un message"
+            required={true}
+          />
+        </div>
+        <div className="ml-3">
+          <CustomMaterialButton type="submit" color={'primary'} text={'Poster'}/>
+        </div>
       </form>
     );
   }
