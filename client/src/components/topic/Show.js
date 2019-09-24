@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { retrieve, reset } from '../../actions/discussion/show';
-import { del } from '../../actions/discussion/delete';
+import { retrieve, reset } from '../../actions/topic/show';
+import { del } from '../../actions/topic/delete';
 
 class Show extends Component {
   static propTypes = {
@@ -83,7 +83,7 @@ class Show extends Component {
           Back to list
         </Link>
         {item && (
-          <Link to={`/discussions/edit/${encodeURIComponent(item['@id'])}`}>
+          <Link to={`/topics/edit/${encodeURIComponent(item['@id'])}`}>
             <button className="btn btn-warning">Edit</button>
           </Link>
         )}
@@ -108,13 +108,13 @@ class Show extends Component {
 }
 
 const mapStateToProps = state => ({
-  retrieved: state.discussion.show.retrieved,
-  error: state.discussion.show.error,
-  loading: state.discussion.show.loading,
-  eventSource: state.discussion.show.eventSource,
-  deleteError: state.discussion.del.error,
-  deleteLoading: state.discussion.del.loading,
-  deleted: state.discussion.del.deleted
+  retrieved: state.topic.show.retrieved,
+  error: state.topic.show.error,
+  loading: state.topic.show.loading,
+  eventSource: state.topic.show.eventSource,
+  deleteError: state.topic.del.error,
+  deleteLoading: state.topic.del.loading,
+  deleted: state.topic.del.deleted
 });
 
 const mapDispatchToProps = dispatch => ({

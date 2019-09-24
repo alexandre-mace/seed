@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Form from './Form';
-import { create, reset } from '../../actions/discussion/create';
+import { create, reset } from '../../actions/topic/create';
 
 class Create extends Component {
   static propTypes = {
@@ -52,7 +52,7 @@ class Create extends Component {
 }
 
 const mapStateToProps = state => {
-  const { created, error, loading } = state.discussion.create;
+  const { created, error, loading } = state.topic.create;
   return { created, error, loading };
 };
 

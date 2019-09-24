@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { list, reset } from '../../actions/discussion/list';
+import { list, reset } from '../../actions/topic/list';
 
 class List extends Component {
   static propTypes = {
@@ -162,7 +162,7 @@ const mapStateToProps = state => {
     error,
     eventSource,
     deletedItem
-  } = state.discussion.list;
+  } = state.topic.list;
   return { retrieved, loading, error, eventSource, deletedItem };
 };
 

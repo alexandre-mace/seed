@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Form from './Form';
-import { retrieve, update, reset } from '../../actions/discussion/update';
-import { del } from '../../actions/discussion/delete';
+import { retrieve, update, reset } from '../../actions/topic/update';
+import { del } from '../../actions/topic/delete';
 
 class Update extends Component {
   static propTypes = {
@@ -100,17 +100,17 @@ class Update extends Component {
 }
 
 const mapStateToProps = state => ({
-  retrieved: state.discussion.update.retrieved,
-  retrieveError: state.discussion.update.retrieveError,
-  retrieveLoading: state.discussion.update.retrieveLoading,
-  updateError: state.discussion.update.updateError,
-  updateLoading: state.discussion.update.updateLoading,
-  deleteError: state.discussion.del.error,
-  deleteLoading: state.discussion.del.loading,
-  eventSource: state.discussion.update.eventSource,
-  created: state.discussion.create.created,
-  deleted: state.discussion.del.deleted,
-  updated: state.discussion.update.updated
+  retrieved: state.topic.update.retrieved,
+  retrieveError: state.topic.update.retrieveError,
+  retrieveLoading: state.topic.update.retrieveLoading,
+  updateError: state.topic.update.updateError,
+  updateLoading: state.topic.update.updateLoading,
+  deleteError: state.topic.del.error,
+  deleteLoading: state.topic.del.loading,
+  eventSource: state.topic.update.eventSource,
+  created: state.topic.create.created,
+  deleted: state.topic.del.deleted,
+  updated: state.topic.update.updated
 });
 
 const mapDispatchToProps = dispatch => ({

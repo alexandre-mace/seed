@@ -24,7 +24,7 @@ class Form extends Component {
     return (
       <div className={`form-group`}>
         <label
-          htmlFor={`discussion_${data.input.name}`}
+          htmlFor={`topic_${data.input.name}`}
           className="form-control-label"
         >
           {data.input.name}
@@ -35,7 +35,7 @@ class Form extends Component {
           step={data.step}
           required={data.required}
           placeholder={data.placeholder}
-          id={`discussion_${data.input.name}`}
+          id={`topic_${data.input.name}`}
         />
         {isInvalid && <div className="invalid-feedback">{data.meta.error}</div>}
       </div>
@@ -68,7 +68,7 @@ class Form extends Component {
 }
 
 export default reduxForm({
-  form: 'discussion',
+  form: 'topic',
   enableReinitialize: true,
   keepDirtyOnReinitialize: true
 })(Form);

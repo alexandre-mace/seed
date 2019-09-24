@@ -67,7 +67,7 @@ class Form extends Component {
         />
         <Field
           component={this.renderField}
-          name="discussions"
+          name="topics"
           type="text"
           placeholder=""
           normalize={v => v.split(',')}

@@ -62,7 +62,7 @@ class List extends Component {
             <tr>
               <th>id</th>
               <th>author</th>
-              <th>discussion</th>
+              <th>topic</th>
               <th>content</th>
               <th colSpan={2} />
             </tr>
@@ -77,7 +77,7 @@ class List extends Component {
                     </Link>
                   </th>
                   <td>{item['author']}</td>
-                  <td>{this.renderLinks('discussions', item['discussion'])}</td>
+                  <td>{this.renderLinks('topics', item['topic'])}</td>
                   <td>{item['content']}</td>
                   <td>
                     <Link to={`show/${encodeURIComponent(item['@id'])}`}>

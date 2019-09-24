@@ -4,6 +4,8 @@ import { Link, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Form from './Form';
 import { create, reset } from '../../actions/message/create';
+import { reset as updateReset } from '../../actions/message/update';
+import {retrieve} from "../../actions/project/show";
 
 class Create extends Component {
   static propTypes = {
@@ -18,17 +20,23 @@ class Create extends Component {
     this.props.reset();
   }
 
+  handleSubmit = (values) => {
+    values['topic'] = this.props.topic['@id']
+    this.props.create(values);
+  }
+
   render() {
-    if (this.props.created)
+    if (this.props.created) {
+      this.props.updateReset(this.props.eventSource);
+      this.props.retrieve(this.props.project['@id']);
       return (
         <Redirect
-          to={`edit/${encodeURIComponent(this.props.created['@id'])}`}
+          to={`/les-projets/${encodeURIComponent(this.props.project['@id'])}`}
         />
-      );
-
+      );    }
     return (
       <div>
-        <h1>New Message</h1>
+        {/*<h1>New Message</h1>*/}
 
         {this.props.loading && (
           <div className="alert alert-info" role="status">
@@ -42,23 +50,26 @@ class Create extends Component {
           </div>
         )}
 
-        <Form onSubmit={this.props.create} values={this.props.item} />
-        <Link to="." className="btn btn-primary">
-          Back to list
-        </Link>
+        <Form onSubmit={this.handleSubmit} values={this.props.item} topic={this.props.topic}/>
+        {/*<Link to="." className="btn btn-primary">*/}
+        {/*  Back to list*/}
+        {/*</Link>*/}
       </div>
     );
   }
 }
 
 const mapStateToProps = state => {
+  const eventSource =  state.user.update.eventSource;
   const { created, error, loading } = state.message.create;
-  return { created, error, loading };
+  return { created, error, loading, eventSource };
 };
 
 const mapDispatchToProps = dispatch => ({
+  retrieve: id => dispatch(retrieve(id)),
   create: values => dispatch(create(values)),
-  reset: () => dispatch(reset())
+  reset: eventSource => dispatch(reset(eventSource)),
+  updateReset: eventSource => dispatch(updateReset(eventSource))
 });
 
 export default connect(

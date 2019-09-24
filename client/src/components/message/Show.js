@@ -73,8 +73,8 @@ class Show extends Component {
                 <td>{item['author']}</td>
               </tr>
               <tr>
-                <th scope="row">discussion</th>
-                <td>{this.renderLinks('discussions', item['discussion'])}</td>
+                <th scope="row">topic</th>
+                <td>{this.renderLinks('topics', item['topic'])}</td>
               </tr>
               <tr>
                 <th scope="row">content</th>

@@ -19,7 +19,7 @@ import * as serviceWorker from './serviceWorker';
 import Welcome from './Welcome';
 import user from './reducers/user/';
 import project from './reducers/project/';
-import discussion from './reducers/discussion/';
+import topic from './reducers/topic/';
 import message from './reducers/message/';
 import userRoutes from './routes/user';
 import HomePage from "./pages/HomePage.jsx";
@@ -27,7 +27,7 @@ import LoginPage from "./pages/LoginPage.jsx";
 import InfoPage from "./pages/InfoPage.jsx";
 import HelpPage from "./pages/HelpPage.jsx";
 import messageRoutes from "./routes/message";
-import discussionRoutes from "./routes/discussion";
+import topicRoutes from "./routes/topic";
 import projectRoutes from "./routes/project";
 
 const history = createBrowserHistory();
@@ -38,7 +38,7 @@ const store = createStore(
       user,
       project,
       message,
-      discussion
+      topic
     /* Add your reducers here */
   }),
   applyMiddleware(routerMiddleware(history), thunk)
@@ -51,7 +51,7 @@ ReactDOM.render(
         <Route path="/welcome" component={Welcome} strict={true} exact={true}/>
           { userRoutes }
           { messageRoutes }
-          { discussionRoutes }
+          { topicRoutes }
           { projectRoutes }
           <Route path="/se-connecter" component={LoginPage} strict={true} exact={true} />
           <Route path="/info" component={InfoPage} strict={true} exact={true} />
