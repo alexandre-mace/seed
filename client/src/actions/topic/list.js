@@ -18,7 +18,7 @@ export function success(retrieved) {
   return { type: 'DISCUSSION_LIST_SUCCESS', retrieved };
 }
 
-export function list(page = '/discussions') {
+export function list(page = '/topics') {
   return dispatch => {
     dispatch(loading(true));
     dispatch(error(''));

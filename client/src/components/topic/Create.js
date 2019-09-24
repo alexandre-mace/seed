@@ -28,7 +28,7 @@ class Create extends Component {
 
     return (
       <div>
-        <h1>New Discussion</h1>
+        <h1>New Topic</h1>
 
         {this.props.loading && (
           <div className="alert alert-info" role="status">

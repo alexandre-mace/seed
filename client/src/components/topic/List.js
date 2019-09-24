@@ -37,7 +37,7 @@ class List extends Component {
   render() {
     return (
       <div>
-        <h1>Discussion List</h1>
+        <h1>Topic List</h1>
 
         {this.props.loading && (
           <div className="alert alert-info">Loading...</div>

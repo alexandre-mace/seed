@@ -22,15 +22,15 @@ class Discussion
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Project", inversedBy="discussions")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $project;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="discussion")
+     * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="topic")
      */
     private $messages;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Forum", inversedBy="topics")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $forum;
 
     public function __construct()
     {
@@ -40,18 +40,6 @@ class Discussion
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getProject(): ?Project
-    {
-        return $this->project;
-    }
-
-    public function setProject(?Project $project): self
-    {
-        $this->project = $project;
-
-        return $this;
     }
 
     /**
@@ -81,6 +69,18 @@ class Discussion
                 $message->setDiscussion(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getForum(): ?Forum
+    {
+        return $this->forum;
+    }
+
+    public function setForum(?Forum $forum): self
+    {
+        $this->forum = $forum;
 
         return $this;
     }
