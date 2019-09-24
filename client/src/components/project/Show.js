@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import { retrieve, reset } from '../../actions/project/show';
 import { del } from '../../actions/project/delete';
 import { update } from '../../actions/project/update';
-import CustomMaterialButton from "../../utils/CustomMaterialButton";
 import {Typography} from "@material-ui/core";
 import CustomBoostButton from "../../utils/CustomBoostButton";
 import redirectToLoginIfNotConnected from "../../utils/redirectToLoginIfNotConnected";
@@ -14,6 +13,7 @@ import arrayRemove from "../../utils/arrayRemove";
 import {AppContext} from "../../utils/AppContext";
 import projectAlreadyBoostedChecker from "../../services/projectAlreadyBoostedChecker";
 import Chip from "@material-ui/core/Chip";
+import Forum from "./Forum";
 
 class Show extends Component {
   static propTypes = {
@@ -97,68 +97,53 @@ class Show extends Component {
                   {this.props.deleteError}
                 </div>
               )}
-              <Link to="/les-projets">
-                <CustomMaterialButton color={'primary'} text={'Retour aux projets'}/>
-              </Link>
-              <div className="mb-3"></div>
+              {/*<div className="back-to">*/}
+              {/*  <Link to="/les-projets">*/}
+              {/*    <Typography variant="h6" component="h6" gutterBottom>*/}
+              {/*      Retour aux projets*/}
+              {/*    </Typography>*/}
+              {/*  </Link>*/}
+              {/*</div>*/}
               {item && (
                 <>
-                  <Typography variant="h2" component="h2" gutterBottom>
-                    {item.pitch}
-                  </Typography>
-                  <div className="d-flex justify-content-between align-content-center">
-                    <Typography variant={'h5'} gutterBottom>
-                      {item.initiator.firstName}
+                  <div className="d-flex justify-content-between">
+                    <Typography variant="h2" component="h2" gutterBottom>
+                      {item.pitch}
                     </Typography>
-                    <div className="d-flex">
+                    <div className="d-flex align-items-center">
                       <CustomBoostButton item={item} user={this.context.currentUser} handleBoost={() => this.handleBoost(item)}/>
+                      <Typography variant={'h6'}>
+                        {item.likes}
+                      </Typography>
                     </div>
                   </div>
-                  <div className="d-flex flex-wrap">
-                    {item.categories.map(category => (
-                      <div className="mr-2 mb-2">
-                        <Chip
-                          label={category}
-                          color="primary"
-                        />
+                  <div className="d-flex justify-content-between align-content-center">
+                    <div className="d-flex flex-column justify-content-between">
+                      <Typography variant={'h5'} gutterBottom>
+                        {item.initiator.firstName}
+                      </Typography>
+                      <div className="d-flex flex-wrap">
+                        {item.categories.map((category, index) => (
+                          <div className="mr-2 mb-2" key={index}>
+                            <Chip
+                              label={category}
+                              color="primary"
+                            />
+                          </div>
+                        ))}
                       </div>
-                    ))}
+                    </div>
                   </div>
-                  <Typography variant={'h6'} gutterBottom>
-                    {item.likes} personnes soutiennent ce projet
-                  </Typography>
+
                   <div className="mb-5"></div>
                   <Typography variant={'body1'}>
                     <span dangerouslySetInnerHTML={{__html: item.description}}></span>
                   </Typography>
-                  {/*    <th scope="row">likes</th>*/}
-                  {/*    <td>{item['likes']}</td>*/}
-                  {/*  </tr>*/}
-                  {/*  <tr>*/}
-                  {/*    <th scope="row">discussions</th>*/}
-                  {/*    <td>{this.renderLinks('discussions', item['discussions'])}</td>*/}
-                  {/*  </tr>*/}
-                  {/*  <tr>*/}
-                  {/*    <th scope="row">initiator</th>*/}
-                  {/*    <td>{item['initiator']}</td>*/}
-                  {/*  </tr>*/}
-                  {/*  <tr>*/}
-                  {/*    <th scope="row">supporters</th>*/}
-                  {/*    <td>{item['supporters']}</td>*/}
-                  {/*  </tr>*/}
-                  {/*  </tbody>*/}
-                  {/*</table>*/}
+                  <div className="mb-5"></div>
+                  <Forum project={item}/>
                 </>
               )}
 
-              {/*  {item && (*/}
-              {/*      <Link to={`/projects/edit/${encodeURIComponent(item['@id'])}`}>*/}
-              {/*        <button className="btn btn-warning">Edit</button>*/}
-              {/*      </Link>*/}
-              {/*  )}*/}
-              {/*<button onClick={this.del} className="btn btn-danger">*/}
-              {/*  Delete*/}
-              {/*</button>*/}
             </div>
           </div>
         </div>
