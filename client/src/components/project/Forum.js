@@ -8,6 +8,7 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import {Create} from "../message";
+import CustomShow from "../message/CustomShow";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -41,7 +42,6 @@ function a11yProps(index) {
 
 const useStyles = makeStyles(theme => ({
   root: {
-    backgroundColor: theme.palette.background.paper,
   },
 }));
 
@@ -83,15 +83,14 @@ export default function Forum(props) {
           <TabPanel value={value} key={index} index={index} dir={theme.direction}>
             <Create topic={topic} project={props.project}/>
             {topic.messages.length > 0 ? (
-              <>
+              <div className="mt-4">
               {topic.messages.map((message, index) => (
-                  <div key={index}>
-                    <p>{message.author.firstName}</p>
-                    <p>{message.content}</p>
+                  <div key={index} className={"mb-3"}>
+                    <CustomShow message={message}/>
                   </div>
                 ))
               }
-              </>
+              </div>
             ) : (
               'Il n\'y a pas encore de message dans cette conversation'
             )}
