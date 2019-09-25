@@ -19,14 +19,16 @@ trait Timestampable {
      */
     private $updatedAt;
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt()
     {
-        return $this->createdAt;
+        return $this->createdAt !== null
+            ? $this->createdAt->format('Y-m-d H:i:s')
+            : $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    public function setCreatedAt(): self
     {
-        $this->createdAt = $createdAt;
+        $this->createdAt = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
 
         return $this;
     }

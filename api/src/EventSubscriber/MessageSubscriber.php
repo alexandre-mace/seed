@@ -1,21 +1,15 @@
 <?php
 
+
 namespace App\EventSubscriber;
 
-use App\Utils\ForumInitiator;
+
+use App\Entity\Message;
 use Doctrine\Common\EventSubscriber;
-use App\Entity\Project;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 
-class ProjectSubscriber implements EventSubscriber
+class MessageSubscriber implements EventSubscriber
 {
-    private $forumInitiator;
-
-    public function __construct(ForumInitiator $forumInitiator)
-    {
-        $this->forumInitiator = $forumInitiator;
-    }
-
     public function getSubscribedEvents()
     {
         return array(
@@ -27,11 +21,10 @@ class ProjectSubscriber implements EventSubscriber
     {
         $entity = $args->getObject();
 
-        if (!$entity instanceof Project) {
+        if (!$entity instanceof Message) {
             return;
         }
 
         $entity->setCreatedAt();
-        $entity->setForum($this->forumInitiator->initiate());
     }
 }

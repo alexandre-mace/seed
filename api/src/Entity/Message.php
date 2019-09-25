@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Behavior\Timestampable;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -13,6 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Message
 {
+    use Timestampable;
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -41,6 +43,12 @@ class Message
      * @Groups({"project"})
      */
     private $content;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     * @Groups({"project"})
+     */
+    private $createdAt;
 
     public function getId(): ?int
     {

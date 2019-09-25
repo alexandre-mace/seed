@@ -31,3 +31,6 @@ services:
     App\EventSubscriber\ProjectSubscriber:
         tags:
             - { name: doctrine.event_subscriber, connection: default }
+    App\EventSubscriber\MessageSubscriber:
+        tags:
+            - { name: doctrine.event_subscriber, connection: default }

@@ -33,7 +33,7 @@ class UserSubscriber implements EventSubscriber
         }
 
         $this->encode($entity);
-        $entity->setCreatedAt(new \DateTime());
+        $entity->setCreatedAt();
     }
 
     public function preUpdate(LifecycleEventArgs $args)
