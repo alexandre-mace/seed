@@ -69,6 +69,7 @@ class Project
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="supportedProjects")
+     * @ORM\JoinTable(name="project_supporters")
      * @Groups({"project"})
      */
     private $supporters;
@@ -85,10 +86,23 @@ class Project
      */
     private $forum;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="joinedProjects")
+     * @ORM\JoinTable(name="project_members")
+     */
+    private $members;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\JoinDemand", mappedBy="relatedProject")
+     */
+    private $joinDemands;
+
     public function __construct()
     {
         $this->topics = new ArrayCollection();
         $this->supporters = new ArrayCollection();
+        $this->members = new ArrayCollection();
+        $this->joinDemands = new ArrayCollection();
     }
     public function getId(): ?int
     {
@@ -192,6 +206,63 @@ class Project
         // set the owning side of the relation if necessary
         if ($this !== $forum->getProject()) {
             $forum->setProject($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getMembers(): Collection
+    {
+        return $this->members;
+    }
+
+    public function addMember(User $member): self
+    {
+        if (!$this->members->contains($member)) {
+            $this->members[] = $member;
+        }
+
+        return $this;
+    }
+
+    public function removeMember(User $member): self
+    {
+        if ($this->members->contains($member)) {
+            $this->members->removeElement($member);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|JoinDemand[]
+     */
+    public function getJoinDemands(): Collection
+    {
+        return $this->joinDemands;
+    }
+
+    public function addJoinDemand(JoinDemand $joinDemand): self
+    {
+        if (!$this->joinDemands->contains($joinDemand)) {
+            $this->joinDemands[] = $joinDemand;
+            $joinDemand->setProject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeJoinDemand(JoinDemand $joinDemand): self
+    {
+        if ($this->joinDemands->contains($joinDemand)) {
+            $this->joinDemands->removeElement($joinDemand);
+            // set the owning side to null (unless already changed)
+            if ($joinDemand->getProject() === $this) {
+                $joinDemand->setProject(null);
+            }
         }
 
         return $this;

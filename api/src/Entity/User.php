@@ -85,11 +85,23 @@ class User implements UserInterface
      */
     private $supportedProjects;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Project", mappedBy="members")
+     */
+    private $joinedProjects;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\JoinDemand", mappedBy="demander")
+     */
+    private $joinDemands;
+
     public function __construct()
     {
         $this->messages = new ArrayCollection();
         $this->initiatedProjects = new ArrayCollection();
         $this->supportedProjects = new ArrayCollection();
+        $this->joinedProjects = new ArrayCollection();
+        $this->joinDemands = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -279,6 +291,65 @@ class User implements UserInterface
         if ($this->supportedProjects->contains($supportedProject)) {
             $this->supportedProjects->removeElement($supportedProject);
             $supportedProject->removeSupporter($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Project[]
+     */
+    public function getJoinedProjects(): Collection
+    {
+        return $this->joinedProjects;
+    }
+
+    public function addJoinedProject(Project $joinedProject): self
+    {
+        if (!$this->joinedProjects->contains($joinedProject)) {
+            $this->joinedProjects[] = $joinedProject;
+            $joinedProject->addMember($this);
+        }
+
+        return $this;
+    }
+
+    public function removeJoinedProject(Project $joinedProject): self
+    {
+        if ($this->joinedProjects->contains($joinedProject)) {
+            $this->joinedProjects->removeElement($joinedProject);
+            $joinedProject->removeMember($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|JoinDemand[]
+     */
+    public function getJoinDemands(): Collection
+    {
+        return $this->joinDemands;
+    }
+
+    public function addJoinDemand(JoinDemand $joinDemand): self
+    {
+        if (!$this->joinDemands->contains($joinDemand)) {
+            $this->joinDemands[] = $joinDemand;
+            $joinDemand->setDemander($this);
+        }
+
+        return $this;
+    }
+
+    public function removeJoinDemand(JoinDemand $joinDemand): self
+    {
+        if ($this->joinDemands->contains($joinDemand)) {
+            $this->joinDemands->removeElement($joinDemand);
+            // set the owning side to null (unless already changed)
+            if ($joinDemand->getDemander() === $this) {
+                $joinDemand->setDemander(null);
+            }
         }
 
         return $this;
