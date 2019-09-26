@@ -13,13 +13,14 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 /**
  * @ApiResource(
  *     attributes={
  *         "formats"={"jsonld"},
- *         "normalization_context"={"groups"={"user", "user:read"}},
- *         "denormalizationContext"={"groups"={"user", "user:write"}}
+ *         "normalization_context"={"groups"={"user", "user:read"}, "enable_max_depth"=true},
+ *         "denormalizationContext"={"groups"={"user", "user:write"}, "enable_max_depth"=true}
  *     },
  * )
  * @ORM\Table(name="app_user")
@@ -75,6 +76,7 @@ class User implements UserInterface
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Project", mappedBy="initiator")
+     * @MaxDepth(5)
      * @Groups({"user"})
      */
     private $initiatedProjects;
@@ -92,6 +94,8 @@ class User implements UserInterface
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\JoinDemand", mappedBy="demander")
+     * @MaxDepth(2)
+     * @Groups({"user"})
      */
     private $joinDemands;
 
