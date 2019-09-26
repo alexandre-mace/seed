@@ -21,6 +21,7 @@ import user from './reducers/user/';
 import project from './reducers/project/';
 import topic from './reducers/topic/';
 import message from './reducers/message/';
+import joindemand from "./reducers/joindemand";
 import userRoutes from './routes/user';
 import HomePage from "./pages/HomePage.jsx";
 import LoginPage from "./pages/LoginPage.jsx";
@@ -28,7 +29,9 @@ import InfoPage from "./pages/InfoPage.jsx";
 import HelpPage from "./pages/HelpPage.jsx";
 import messageRoutes from "./routes/message";
 import topicRoutes from "./routes/topic";
+import joinDemandRoutes from "./routes/joindemand";
 import projectRoutes from "./routes/project";
+import DashboardPage from "./pages/DashboardPage";
 
 const history = createBrowserHistory();
 const store = createStore(
@@ -38,7 +41,8 @@ const store = createStore(
       user,
       project,
       message,
-      topic
+      topic,
+      joindemand
     /* Add your reducers here */
   }),
   applyMiddleware(routerMiddleware(history), thunk)
@@ -53,7 +57,9 @@ ReactDOM.render(
           { messageRoutes }
           { topicRoutes }
           { projectRoutes }
-          <Route path="/se-connecter" component={LoginPage} strict={true} exact={true} />
+          { joinDemandRoutes }
+        <Route path="/tableau-de-bord" component={DashboardPage} strict={true} exact={true} />
+        <Route path="/se-connecter" component={LoginPage} strict={true} exact={true} />
           <Route path="/info" component={InfoPage} strict={true} exact={true} />
           <Route path="/help" component={HelpPage} strict={true} exact={true} />
         <Route path="/" component={HomePage} strict={true} exact={true} />
