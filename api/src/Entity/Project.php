@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
@@ -17,8 +18,8 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  * @ApiResource(
  *     attributes={
  *         "formats"={"jsonld"},
- *         "normalization_context"={"groups"={"project", "project:read"}},
- *         "denormalizationContext"={"groups"={"project", "project:write"}}
+ *         "normalization_context"={"groups"={"project", "project:read"}, "enable_max_depth"=true},
+ *         "denormalizationContext"={"groups"={"project", "project:write"}, "enable_max_depth"=true}
  *     },
  * )
  * @ApiFilter(OrderFilter::class, properties={"likes"}, arguments={"orderParameterName"="order"})
@@ -41,7 +42,7 @@ class Project
      * @Assert\NotNull
      * @Assert\NotBlank
      * @Assert\Type("string")
-     * @Groups({"project"})
+     * @Groups({"project", "user"})
      */
     private $pitch;
 
@@ -94,6 +95,8 @@ class Project
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\JoinDemand", mappedBy="relatedProject")
+     * @Groups({"user", "project"})
+     * @MaxDepth(6)
      */
     private $joinDemands;
 
