@@ -42,6 +42,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      * @Assert\Email
+     * @Groups({"project"})
      */
     private $email;
 
@@ -76,7 +77,7 @@ class User implements UserInterface
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Project", mappedBy="initiator")
-     * @MaxDepth(5)
+     * @MaxDepth(1)
      * @Groups({"user"})
      */
     private $initiatedProjects;
