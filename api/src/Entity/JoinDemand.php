@@ -83,6 +83,12 @@ class JoinDemand
             case 'pending':
                 return 'En attente';
                 break;
+            case 'accepted':
+                return 'Acceptée';
+                break;
+            case 'declined':
+                return 'Refusée';
+                break;
             default:
                 return $this->status;
         }
