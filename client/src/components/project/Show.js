@@ -14,6 +14,8 @@ import {AppContext} from "../../utils/AppContext";
 import projectAlreadyBoostedChecker from "../../services/projectAlreadyBoostedChecker";
 import Chip from "@material-ui/core/Chip";
 import Forum from "./Forum";
+import {Create} from "../joindemand";
+import {authentication} from "../../services/authentication";
 
 class Show extends Component {
   static propTypes = {
@@ -117,7 +119,7 @@ class Show extends Component {
                       </Typography>
                     </div>
                   </div>
-                  <div className="d-flex justify-content-between align-content-center">
+                  <div className="d-flex justify-content-between align-items-center">
                     <div className="d-flex flex-column justify-content-between">
                       <Typography variant={'h5'} gutterBottom>
                         {item.initiator.firstName}
@@ -132,6 +134,9 @@ class Show extends Component {
                           </div>
                         ))}
                       </div>
+                    </div>
+                    <div>
+                      <Create demander={authentication.currentUserValue['@id']} project={item['@id']} status={'pending'}/>
                     </div>
                   </div>
 
