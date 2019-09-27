@@ -24,9 +24,13 @@ export function create(values) {
     }
   }
   values.categories = categories;
+  values.initiator = authentication.currentUserValue['@id'];
+  const members = [];
+  members.push(authentication.currentUserValue['@id']);
+  values.members = members;
+
   return dispatch => {
     dispatch(loading(true));
-    values.initiator = authentication.currentUserValue['@id'];
 
     return fetch('/projects', { method: 'POST', body: JSON.stringify(values) })
       .then(response => {
