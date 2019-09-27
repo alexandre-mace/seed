@@ -64,7 +64,7 @@ class Project
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="initiatedProjects")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"project"})
+     * @Groups({"project", "user"})
      */
     private $initiator;
 
@@ -90,6 +90,7 @@ class Project
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="joinedProjects")
      * @ORM\JoinTable(name="project_members")
+     * @Groups({"user", "project"})
      */
     private $members;
 
