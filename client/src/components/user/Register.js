@@ -47,7 +47,7 @@ class Register extends React.Component {
                     })}
                     onSubmit={(fields, { setStatus, setSubmitting, setErrors, resetForm }, initialValues) => {
                         setStatus();
-                        fetch('http://localhost:8080/users', { method: 'POST', body: JSON.stringify(fields, ['firstName', 'lastName', 'email', 'password'], 4)  })
+                        fetch('/users', { method: 'POST', body: JSON.stringify(fields, ['firstName', 'lastName', 'email', 'password'], 4)  })
                             .then((response) => {
                                 authentication.login(fields.email, fields.password)
                                     .then(
