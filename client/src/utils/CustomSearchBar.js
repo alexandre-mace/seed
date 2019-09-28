@@ -44,7 +44,7 @@ function renderSuggestion(suggestionProps) {
   const isSelected = (selectedItem || '').indexOf(suggestion.label) > -1;
 
   return (
-    <Link to={`/les-projets/${encodeURIComponent(suggestion['@id'])}`}>
+    <Link to={`/les-projets/${encodeURIComponent(suggestion['@id'])}`} key={index}>
       <MenuItem
         {...itemProps}
         key={suggestion.label}
