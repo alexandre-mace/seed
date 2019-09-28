@@ -18,7 +18,7 @@ export function create(values) {
 
   values['description'] = document.getElementById('project_description').value;
   const categories = [];
-  for (let [key, value] of Object.entries(values)) {
+  for (let [key] of Object.entries(values)) {
     if (key.startsWith('category')) {
       categories.push(key.replace('category-', ''));
     }

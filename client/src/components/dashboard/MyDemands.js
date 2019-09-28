@@ -10,12 +10,16 @@ export default function MyDemands(props) {
         <>
           {props.demands.map((demand, index) => (
             <div key={index} className="d-flex justify-content-around">
-              <Link to={`les-projets/${encodeURIComponent(demand.relatedProject['@id'])}`}>
-                <Typography variant="body1" component="h6" gutterBottom>
-                  {demand.relatedProject.pitch}
-                </Typography>
-              </Link>
-              <p>{demand.status}</p>
+              <div className="col text-center">
+                <Link to={`les-projets/${encodeURIComponent(demand.relatedProject['@id'])}`}>
+                  <Typography variant="body1" component="h6" gutterBottom>
+                    {demand.relatedProject.pitch}
+                  </Typography>
+                </Link>
+              </div>
+              <div className="col text-center">
+                <p>{demand.status}</p>
+              </div>
             </div>
           ))}
         </>

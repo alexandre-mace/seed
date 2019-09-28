@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-import { List, Create, Update, Show } from '../components/project/';
+import { List, Create, Update } from '../components/project/';
 import Initiate from "../components/project/Initiate";
 import ListingPage from "../pages/ListingPage";
 import {PrivateRoute} from "../utils/PrivateRoute";

@@ -7,7 +7,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import InputBase from '@material-ui/core/InputBase';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
-import {extractHubURL, fetch} from "../services/dataAccess";
+import {fetch} from "../services/dataAccess";
 import Link from "react-router-dom/es/Link";
 
 function renderInput(inputProps) {

@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import MyProjectMembers from "./MyProjectMembers";
 import MyProjectDemands from "./MyProjectDemands";
+import {Link} from "react-router-dom";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -72,10 +73,24 @@ export default function MyProject(props) {
               </Tabs>
             </AppBar>
             <TabPanel value={value} index={0}>
-              <MyProjectMembers {...props} project={props.project} />
+              <>
+                <Link to={`les-projets/${encodeURIComponent(props.project['@id'])}`}>
+                  <Typography variant="h6" gutterBottom>
+                    {props.project.pitch}
+                  </Typography>
+                </Link>
+                <MyProjectMembers {...props} project={props.project} />
+              </>
             </TabPanel>
             <TabPanel value={value} index={1}>
-              <MyProjectDemands {...props} project={props.project}/>
+              <>
+                <Link to={`les-projets/${encodeURIComponent(props.project['@id'])}`}>
+                  <Typography variant="h6" gutterBottom>
+                    {props.project.pitch}
+                  </Typography>
+                </Link>
+                <MyProjectDemands {...props} project={props.project}/>
+              </>
             </TabPanel>
           </div>
   );

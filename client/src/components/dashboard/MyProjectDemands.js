@@ -1,7 +1,6 @@
 import React from 'react';
 import {Typography} from "@material-ui/core";
 import CustomMaterialButton from "../../utils/CustomMaterialButton";
-import {Link} from "react-router-dom";
 import {fetch} from "../../utils/dataAccess";
 
 export default function MyProjectDemands(props) {
@@ -36,19 +35,13 @@ export default function MyProjectDemands(props) {
         <div className="col">
           {props.project && (
             <>
-              <Link to={`les-projets/${encodeURIComponent(props.project['@id'])}`}>
-                <Typography variant="h5" component="h5" gutterBottom>
-                  {props.project.pitch}
-                </Typography>
-              </Link>
-
               {props.project.joinDemands.length > 0 ? (
                 <>
                   {props.project.joinDemands.map((demand, index) => (
                     <div key={index}>
                       <div className="d-flex">
                         <div className="mr-3">
-                          <Typography variant={'h6'} gutterBottom>
+                          <Typography variant={'body1'} gutterBottom>
                             {demand.status === 'En attente' &&
                             <>
                               {demand.demander.firstName} aimerait vous rejoindre
