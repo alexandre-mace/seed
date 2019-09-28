@@ -20,7 +20,8 @@ export default function MyProjectDemands(props) {
                 response
                   .json()
                   .then(retrieved => {
-                    props.setProject(retrieved);
+                    props.reloadMyProjects();
+                    props.reloadDashboard();
                   })
               )
               .catch(e => {

@@ -7,7 +7,7 @@ export default function MyProjectMembers(props) {
         <>
           <p>{props.project.initiator.firstName} (vous) - {props.project.initiator.email}</p>
           {props.project.members.filter(member => member['@id'] !== props.project.initiator['@id']).map((member) => (
-            <p>{member.firstName}</p>
+            <p>{member.firstName} - {member.email}</p>
           ))}
         </>
         }

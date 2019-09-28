@@ -31,6 +31,10 @@ class UserAccessor extends Component {
     this.props.reset(this.props.eventSource);
   }
 
+  reloadDashboard = () => {
+    this.props.retrieve(authentication.currentUserValue['@id']);
+  }
+
   del = () => {
     if (window.confirm('Are you sure you want to delete this item?'))
       this.props.del(this.props.retrieved);
@@ -43,11 +47,11 @@ class UserAccessor extends Component {
 
     return (
       <div>
-        {this.props.loading && (
-          <div className="alert alert-info" role="status">
-            Loading...
-          </div>
-        )}
+        {/*{this.props.loading && (*/}
+        {/*  <div className="alert alert-info" role="status">*/}
+        {/*    Loading...*/}
+        {/*  </div>*/}
+        {/*)}*/}
         {this.props.error && (
           <div className="alert alert-danger" role="alert">
             <span className="fa fa-exclamation-triangle" aria-hidden="true" />{' '}
@@ -61,7 +65,7 @@ class UserAccessor extends Component {
           </div>
         )}
         {item &&
-          <Dashboard user={item}/>
+          <Dashboard {...this.props} reloadDashboard={() => this.reloadDashboard()} user={item}/>
         }
       </div>
     );

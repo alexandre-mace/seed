@@ -8,7 +8,6 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import MyProjectMembers from "./MyProjectMembers";
 import MyProjectDemands from "./MyProjectDemands";
-import {fetch} from "../../services/dataAccess";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -51,25 +50,10 @@ const useStyles = makeStyles(theme => ({
 export default function MyProject(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
-  const [project, setProject] = React.useState(null);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
-  if (project === null) {
-    fetch(props.project['@id'])
-      .then(response =>
-        response
-          .json()
-          .then(retrieved => {
-            setProject(retrieved)
-          })
-      )
-      .catch(e => {
-        console.log(e)
-      });
-  }
 
   return (
           <div className={classes.root}>
@@ -88,10 +72,10 @@ export default function MyProject(props) {
               </Tabs>
             </AppBar>
             <TabPanel value={value} index={0}>
-              <MyProjectMembers {...props} project={project} />
+              <MyProjectMembers {...props} project={props.project} />
             </TabPanel>
             <TabPanel value={value} index={1}>
-              <MyProjectDemands {...props} project={project} setProject={setProject}/>
+              <MyProjectDemands {...props} project={props.project}/>
             </TabPanel>
           </div>
   );

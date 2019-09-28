@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import MyProjects from "./MyProjects";
 import MyDemands from "./MyDemands";
+import {Badge} from "@material-ui/core";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -45,6 +46,9 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     backgroundColor: theme.palette.background.paper,
   },
+  padding: {
+    padding: theme.spacing(0, 2),
+  },
 }));
 
 export default function Dashboard(props) {
@@ -71,7 +75,12 @@ export default function Dashboard(props) {
                 aria-label="scrollable auto tabs example"
               >
                 <Tab label={`Mes projets (${props.user.initiatedProjects.length})`} {...a11yProps(0)} />
-                <Tab label={`Mes demandes (${props.user.joinDemands.length})`} {...a11yProps(1)} />
+                <Tab label={
+                  <Badge className={classes.padding} color="secondary" badgeContent={props.user.joinDemands.filter(demand => (demand.status === 'En attente')).length > 0 ? props.user.joinDemands.filter(demand => (demand.status === 'En attente')).length : undefined}>
+                    Mes demandes ({props.user.joinDemands.length})
+                  </Badge>}
+                     {...a11yProps(1)}
+                />
               </Tabs>
             </AppBar>
             <TabPanel value={value} index={0}>
