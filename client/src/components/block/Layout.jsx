@@ -1,12 +1,13 @@
 import React from 'react';
 import Header from "./Header.jsx";
-import { authentication } from '../../services/authentication';
+import {authentication} from '../../services/authentication';
 import Footer from "../block/Footer.jsx";
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import {AppContext} from '../../utils/AppContext';
-import { createMuiTheme } from '@material-ui/core/styles';
+import {createMuiTheme} from '@material-ui/core/styles';
 import blue from '@material-ui/core/colors/blue';
-import { ThemeProvider } from '@material-ui/styles';
+import {ThemeProvider} from '@material-ui/styles';
+import {fetch} from "../../utils/dataAccess";
 
 const theme = createMuiTheme({
     palette: {
@@ -21,17 +22,30 @@ class Layout extends React.Component {
             currentUser: false
         };
     }
+    fetchUser = () => {
+        fetch(authentication.currentUserValue['@id'])
+            .then(response =>
+                response
+                    .json()
+                    .then(retrieved => {
+                        this.setState({
+                            currentUser: retrieved
+                        })
+                    })
+            )
+            .catch(e => {
+                console.log(e)
+            });
+    }
 
     componentDidMount() {
-        this.setState({
-            currentUser: authentication.currentUserValue
-        })
+        if (authentication.currentUserValue && authentication.currentUserValue['@id']) {
+            this.fetchUser();
+        }
     }
 
     updateCurrentUser = () => {
-        this.setState({
-            currentUser: authentication.currentUserValue
-        })
+        this.fetchUser()
     }
 
     render() {

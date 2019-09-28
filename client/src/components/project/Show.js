@@ -16,6 +16,7 @@ import Chip from "@material-ui/core/Chip";
 import Forum from "./Forum";
 import {Create} from "../joindemand";
 import {authentication} from "../../services/authentication";
+import CustomMaterialButton from "../../utils/CustomMaterialButton";
 
 class Show extends Component {
   static propTypes = {
@@ -72,6 +73,19 @@ class Show extends Component {
         })
     }
   };
+
+  loggedUserHasAlreadyLikeTheProjectChecker = (item) => {
+    let check = false;
+    if (!this.context.currentUser) {
+      return check;
+    }
+    this.context.currentUser.joinDemands.forEach(joindemand => {
+      if (joindemand.relatedProject['@id'] === item['@id']) {
+        check = true
+      }
+    });
+    return check;
+  }
 
   render() {
     if (this.props.deleted) return <Redirect to=".." />;
@@ -136,7 +150,23 @@ class Show extends Component {
                       </div>
                     </div>
                     <div>
-                      <Create demander={authentication.currentUserValue['@id']} project={item['@id']} status={'pending'}/>
+                      {(item.initiator.email !== this.context.currentUser.email) &&
+                      <>
+                        {this.loggedUserHasAlreadyLikeTheProjectChecker(item) ? (
+                          <p>Vous avez demandé à rejoindre ce projet !</p>
+                        ) : (
+                          <>
+                            {authentication.currentUserValue ? (
+                              <Create demander={authentication.currentUserValue['@id']} project={item['@id']} status={'pending'}/>
+                            ) : (
+                              <Link to="/se-connecter">
+                                <CustomMaterialButton text={'Rejoindre le projet'} color={'primary'}/>
+                              </Link>
+                            )}
+                          </>
+                        )}
+                      </>
+                      }
                     </div>
                   </div>
 
