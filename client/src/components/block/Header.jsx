@@ -31,7 +31,7 @@ class Header extends React.Component {
                             </Link>
                         )}
                     </div>
-                    <div className="col">
+                    <div className={'col' + (this.props.currentUser ? '' : ' flex-grow-high')}>
                         <Link to="/initier-un-projet">
                             <CustomMaterialButton text={'Initier un projet'} color={'primary'}/>
                         </Link>

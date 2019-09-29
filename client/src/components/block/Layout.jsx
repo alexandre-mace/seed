@@ -48,7 +48,13 @@ class Layout extends React.Component {
     }
 
     updateCurrentUser = () => {
-        this.fetchUser()
+        if (authentication.currentUserValue) {
+            this.fetchUser()
+        } else {
+            this.setState({
+                currentUser: false
+            })
+        }
     }
 
     render() {
