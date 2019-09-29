@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Form from './Form';
 import { create, reset } from '../../actions/joindemand/create';
+import {AppContext} from "../../utils/AppContext";
 
 class Create extends Component {
   static propTypes = {
@@ -12,6 +13,7 @@ class Create extends Component {
     create: PropTypes.func.isRequired,
     reset: PropTypes.func.isRequired
   };
+  static contextType = AppContext;
 
   componentWillUnmount() {
     this.props.reset();
@@ -22,7 +24,9 @@ class Create extends Component {
     values['project'] = this.props.project;
     values['status'] = this.props.status;
 
-    this.props.create(values)
+    this.props.create(values).then(() => {
+      this.context.updateCurrentUser();
+    })
   }
 
   render() {
