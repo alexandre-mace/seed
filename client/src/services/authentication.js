@@ -20,9 +20,9 @@ function login(email, password) {
                 .then(user => {return user.json()})
                 .then(user => {
                         const storedUser = user['hydra:member'][0];
-                        storedUser.token = token;
                         // store user details and jwt token in local storage to keep user logged in between page refreshes
                         localStorage.setItem('currentUser', JSON.stringify(storedUser));
+                        localStorage.setItem('currentUserToken', JSON.stringify(token))
                         return storedUser;
                     }
                 )
@@ -33,4 +33,5 @@ function login(email, password) {
 function logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('currentUser');
+    localStorage.removeItem('currentUserToken');
 }
