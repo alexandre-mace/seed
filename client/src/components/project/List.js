@@ -10,6 +10,7 @@ import arrayRemove from "../../utils/arrayRemove";
 import {update as updateUser} from "../../actions/user/update";
 import {AppContext} from "../../utils/AppContext";
 import {update} from "../../actions/project/update";
+import jsonLDFlattener from "../../utils/jsonLDFlattener";
 
 class List extends Component {
   static propTypes = {
@@ -45,26 +46,24 @@ class List extends Component {
   handleBoost = (item) => {
     redirectToLoginIfNotConnected(this.props);
     if (!projectAlreadyBoostedChecker(item['@id'], this.context.currentUser.supportedProjects)) {
-      let supportedProjects = this.context.currentUser.supportedProjects;
+      let supportedProjects = jsonLDFlattener(this.context.currentUser.supportedProjects);
       supportedProjects.push(item['@id']);
       this.props.update(item, {likes: item['likes'] + 1})
         .then(() => {
           this.props.updateUser(this.context.currentUser, {supportedProjects: supportedProjects})
-          localStorage.setItem('currentUser', JSON.stringify(this.context.currentUser));
-          this.context.updateCurrentUser();
-          this.props.list(
-            this.props.match.params.page &&
-            decodeURIComponent(this.props.match.params.page)
-          );
+            .then(() => {
+              this.context.updateCurrentUser();
+              this.props.list(
+                this.props.match.params.page &&
+                decodeURIComponent(this.props.match.params.page)
+              );
+            })
         })
     } else {
       this.props.update(item, {likes: item['likes'] - 1})
         .then(() => {
-          this.props.updateUser(this.context.currentUser, {supportedProjects: arrayRemove(this.context.currentUser.supportedProjects, item['@id'])})
+          this.props.updateUser(this.context.currentUser, {supportedProjects: arrayRemove(jsonLDFlattener(this.context.currentUser.supportedProjects), item['@id'])})
             .then(() => {
-              const newUser = this.context.currentUser;
-              newUser.supportedProjects = arrayRemove(newUser.supportedProjects, item['@id'])
-              localStorage.setItem('currentUser', JSON.stringify(newUser));
               this.context.updateCurrentUser();
               this.props.list(
                 this.props.match.params.page &&

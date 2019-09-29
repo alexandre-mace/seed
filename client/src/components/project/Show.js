@@ -17,6 +17,7 @@ import Forum from "./Forum";
 import {Create} from "../joindemand";
 import {authentication} from "../../services/authentication";
 import CustomMaterialButton from "../../utils/CustomMaterialButton";
+import jsonLDFlattener from "../../utils/jsonLDFlattener";
 
 class Show extends Component {
   static propTypes = {
@@ -50,23 +51,21 @@ class Show extends Component {
   handleBoost = (item) => {
     redirectToLoginIfNotConnected(this.props);
     if (!projectAlreadyBoostedChecker(item['@id'], this.context.currentUser.supportedProjects)) {
-      let supportedProjects = this.context.currentUser.supportedProjects;
+      let supportedProjects = jsonLDFlattener(this.context.currentUser.supportedProjects);
       supportedProjects.push(item['@id']);
       this.props.update(item, {likes: item['likes'] + 1})
         .then(() => {
           this.props.updateUser(this.context.currentUser, {supportedProjects: supportedProjects})
-          localStorage.setItem('currentUser', JSON.stringify(this.context.currentUser));
-          this.context.updateCurrentUser();
-          this.props.retrieve(decodeURIComponent(this.props.match.params.id));
+            .then(() => {
+              this.context.updateCurrentUser();
+              this.props.retrieve(decodeURIComponent(this.props.match.params.id));
+            })
         })
     } else {
       this.props.update(item, {likes: item['likes'] - 1})
         .then(() => {
-          this.props.updateUser(this.context.currentUser, {supportedProjects: arrayRemove(this.context.currentUser.supportedProjects, item['@id'])})
+          this.props.updateUser(this.context.currentUser, {supportedProjects: arrayRemove(jsonLDFlattener(this.context.currentUser.supportedProjects), item['@id'])})
             .then(() => {
-              const newUser = this.context.currentUser;
-              newUser.supportedProjects = arrayRemove(newUser.supportedProjects, item['@id'])
-              localStorage.setItem('currentUser', JSON.stringify(newUser));
               this.context.updateCurrentUser();
               this.props.retrieve(decodeURIComponent(this.props.match.params.id));
             })
