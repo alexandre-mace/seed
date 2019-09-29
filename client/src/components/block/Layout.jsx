@@ -19,7 +19,7 @@ class Layout extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            currentUser: false
+            currentUser: authentication.currentUserValue
         };
     }
     fetchUser = () => {
@@ -28,9 +28,12 @@ class Layout extends React.Component {
                 response
                     .json()
                     .then(retrieved => {
-                        this.setState({
-                            currentUser: retrieved
-                        })
+                        if (JSON.stringify(this.state.currentUser) !== JSON.stringify(retrieved) ) {
+                            localStorage.setItem('currentUser', JSON.stringify(retrieved))
+                            this.setState({
+                                currentUser: retrieved
+                            })
+                        }
                     })
             )
             .catch(e => {
