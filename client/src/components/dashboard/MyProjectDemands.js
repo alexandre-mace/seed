@@ -2,6 +2,7 @@ import React from 'react';
 import {Typography} from "@material-ui/core";
 import CustomMaterialButton from "../../utils/CustomMaterialButton";
 import {fetch} from "../../utils/dataAccess";
+import jsonLDFlattner from "../../utils/jsonLDFlattener";
 
 export default function MyProjectDemands(props) {
   const acceptDemand = (demand) => {
@@ -10,24 +11,20 @@ export default function MyProjectDemands(props) {
       headers: new Headers({ 'Content-Type': 'application/ld+json' }),
       body: JSON.stringify({ status: 'accepted' })
     })
-      .then(response =>
-        response
-          .json()
-          .then(retrieved => {
-            fetch(retrieved.relatedProject)
-              .then(response =>
-                response
-                  .json()
-                  .then(retrieved => {
-                    props.reloadMyProjects();
-                    props.reloadDashboard();
-                  })
-              )
-              .catch(e => {
-                console.log(e)
-              });
-          }))
-  }
+      .then(() => {
+        let members = jsonLDFlattner(props.project.members)
+        members.push(demand.demander['@id'])
+        fetch(props.project['@id'], {
+          method: 'PUT',
+          headers: new Headers({ 'Content-Type': 'application/ld+json' }),
+          body: JSON.stringify({ members: members })
+        })
+          .then(() => {
+            props.reloadMyProjects();
+            props.reloadDashboard();
+          })
+      })
+  };
 
   return (
     <div className="container">
