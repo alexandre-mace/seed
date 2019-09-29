@@ -36,11 +36,13 @@ class Header extends React.Component {
                             <CustomMaterialButton text={'Initier un projet'} color={'primary'}/>
                         </Link>
                     </div>
+                    {this.props.currentUser &&
                     <div className="col flex-grow-high">
                         <Link to="/tableau-de-bord">
                             <CustomMaterialButton text={'Tableau de bord'}/>
                         </Link>
                     </div>
+                    }
                     <div className="col">
                         <CustomSearchBar/>
                     </div>
