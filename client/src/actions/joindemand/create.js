@@ -1,5 +1,5 @@
 import { SubmissionError } from 'redux-form';
-import { fetch } from '../../utils/dataAccess';
+import { fetch } from '../../services/dataAccess';
 
 export function error(error) {
   return { type: 'JOINDEMAND_CREATE_ERROR', error };

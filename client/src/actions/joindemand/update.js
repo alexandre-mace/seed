@@ -4,7 +4,7 @@ import {
   extractHubURL,
   normalize,
   mercureSubscribe as subscribe
-} from '../../utils/dataAccess';
+} from '../../services/dataAccess';
 import { success as createSuccess } from './create';
 import { loading, error } from './delete';
 

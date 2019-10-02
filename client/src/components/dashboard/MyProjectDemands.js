@@ -1,7 +1,7 @@
 import React from 'react';
 import {Typography} from "@material-ui/core";
 import CustomMaterialButton from "../../utils/CustomMaterialButton";
-import {fetch} from "../../utils/dataAccess";
+import {fetch} from "../../services/dataAccess";
 import jsonLDFlattner from "../../utils/jsonLDFlattener";
 
 export default function MyProjectDemands(props) {

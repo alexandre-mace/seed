@@ -7,6 +7,7 @@ import mapValues from 'lodash/mapValues';
 const MIME_TYPE = 'application/ld+json';
 
 export function fetch(id, options = {}) {
+  console.log(id)
   if ('undefined' === typeof options.headers) options.headers = new Headers();
   if (null === options.headers.get('Accept'))
     options.headers.set('Accept', MIME_TYPE);
