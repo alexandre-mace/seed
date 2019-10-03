@@ -53,17 +53,17 @@ ReactDOM.render(
     <ConnectedRouter history={history}>
       <Switch>
         <Route path="/welcome" component={Welcome} strict={true} exact={true}/>
-          { userRoutes }
-          { messageRoutes }
-          { topicRoutes }
-          { projectRoutes }
-          { joinDemandRoutes }
+        { userRoutes }
+        { messageRoutes }
+        { topicRoutes }
+        { projectRoutes }
+        { joinDemandRoutes }
         <Route path="/tableau-de-bord" component={DashboardPage} strict={true} exact={true} />
         <Route path="/se-connecter" component={LoginPage} strict={true} exact={true} />
-          <Route path="/info" component={InfoPage} strict={true} exact={true} />
-          <Route path="/help" component={HelpPage} strict={true} exact={true} />
-        <Route path="/" component={HomePage} strict={true} exact={true} />
-          <Route render={() => <h1>Not Found</h1>} />
+        <Route path="/info" component={InfoPage} strict={true} exact={true} />
+        <Route path="/help" component={HelpPage} strict={true} exact={true} />
+        <Route path="/" component={HomePage} />
+        <Route render={() => <h1>Not Found</h1>} />
       </Switch>
     </ConnectedRouter>
   </Provider>,
