@@ -5,22 +5,25 @@ import { authentication } from '../../services/authentication';
 import Typography from '@material-ui/core/Typography';
 import CustomSearchBar from "../../utils/CustomSearchBar";
 import CustomMaterialButton from "../../utils/CustomMaterialButton";
+import {setAuthenticated} from "../../actions/authentication";
 
 class Header extends React.Component {
     handleLogout = () => {
         authentication.logout();
-        this.props.updateCurrentUser();
+        this.props.setAuthenticated(false);
     }
 
     render() {
+        const user = this.props.authenticated ? (this.props.updated ? this.props.updated : this.props.retrieved) : false;
+
         return (
             <div className="container-fluid">
                 <div className="row py-3">
                     <div className="col d-flex align-items-center ">
-                        {this.props.currentUser ? (
+                        {user ? (
                             <Link to="/">
                                 <Typography variant="h6" noWrap>
-                                    Bonjour {this.props.currentUser.firstName}
+                                    Bonjour {user.firstName}
                                 </Typography>
                             </Link>
                         ) : (
@@ -31,12 +34,12 @@ class Header extends React.Component {
                             </Link>
                         )}
                     </div>
-                    <div className={'col' + (this.props.currentUser ? '' : ' flex-grow-high')}>
+                    <div className={'col' + (user ? '' : ' flex-grow-high')}>
                         <Link to="/initier-un-projet">
                             <CustomMaterialButton text={'Initier un projet'} color={'primary'}/>
                         </Link>
                     </div>
-                    {this.props.currentUser &&
+                    {user &&
                     <div className="col flex-grow-high">
                         <Link to="/tableau-de-bord">
                             <CustomMaterialButton text={'Tableau de bord'}/>
@@ -62,7 +65,7 @@ class Header extends React.Component {
                     </ul>
 
                     <div className="col d-flex">
-                        {this.props.currentUser ? (
+                        {user ? (
                             <div onClick={this.handleLogout}>
                                 <CustomMaterialButton text={'Se déconnecter'} color={'secondary'} />
                             </div>
@@ -79,9 +82,13 @@ class Header extends React.Component {
 }
 
 const mapStateToProps = state => ({
+    authenticated: state.authentication.authenticated,
+    updated: state.user.update.updated,
+    retrieved: state.user.show.retrieved
 });
 
 const mapDispatchToProps = dispatch => ({
+    setAuthenticated: boolean => dispatch(setAuthenticated(boolean))
 });
 
 export default connect(

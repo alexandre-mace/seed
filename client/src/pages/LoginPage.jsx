@@ -17,11 +17,11 @@ export default class LoginPage extends React.Component {
                 <div className="container">
                     <div className="row">
                         <div className="col">
-                            <Login/>
+                            <Login {...this.props}/>
                         </div>
                         <div className="mx-5"></div>
                         <div className="col">
-                            <Register/>
+                            <Register {...this.props}/>
                         </div>
                     </div>
                 </div>

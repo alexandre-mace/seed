@@ -6,9 +6,10 @@ import { TextField } from 'formik-material-ui';
 import {
     LinearProgress,
 } from '@material-ui/core';
-import {AppContext} from "../../utils/AppContext";
-import { withRouter } from 'react-router'
 import CustomMaterialButton from "../../utils/CustomMaterialButton";
+import {setAuthenticated} from "../../actions/authentication";
+import {connect} from "react-redux";
+import {retrieve} from "../../actions/user/show";
 
 class Login extends React.Component {
     constructor(props){
@@ -36,8 +37,9 @@ class Login extends React.Component {
                             .then(
                                 () => {
                                     setSubmitting(false);
-                                    this.context.updateCurrentUser();
-                                    this.props.history.push('/')
+                                    this.props.setAuthenticated(true);
+                                    this.props.retrieve(authentication.currentUserValue['@id']);
+                                  this.props.history.push('/')
                                 },
                                 error => {
                                     setSubmitting(false);
@@ -68,6 +70,16 @@ class Login extends React.Component {
         );
     }
 }
-export default withRouter(Login);
-Login.contextType = AppContext;
+const mapStateToProps = state => ({
+});
+
+const mapDispatchToProps = dispatch => ({
+  retrieve: id => dispatch(retrieve(id)),
+  setAuthenticated: boolean => dispatch(setAuthenticated(boolean))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Login);
 

@@ -1,13 +1,14 @@
 import React from 'react';
 import Header from "./Header.jsx";
-import {authentication} from '../../services/authentication';
 import Footer from "../block/Footer.jsx";
-import {connect} from 'react-redux';
 import {AppContext} from '../../utils/AppContext';
 import {createMuiTheme} from '@material-ui/core/styles';
 import blue from '@material-ui/core/colors/blue';
 import {ThemeProvider} from '@material-ui/styles';
-import {fetch} from "../../utils/dataAccess";
+import {setAuthenticated} from "../../actions/authentication";
+import {connect} from "react-redux";
+import {authentication} from "../../services/authentication";
+import {retrieve} from "../../actions/user/show";
 
 const theme = createMuiTheme({
     palette: {
@@ -16,52 +17,19 @@ const theme = createMuiTheme({
 });
 
 class Layout extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            currentUser: authentication.currentUserValue
-        };
-    }
-    fetchUser = () => {
-        fetch(authentication.currentUserValue['@id'])
-            .then(response =>
-                response
-                    .json()
-                    .then(retrieved => {
-                        if (JSON.stringify(this.state.currentUser) !== JSON.stringify(retrieved) ) {
-                            localStorage.setItem('currentUser', JSON.stringify(retrieved))
-                            this.setState({
-                                currentUser: retrieved
-                            })
-                        }
-                    })
-            )
-            .catch(e => {
-                console.log(e)
-            });
-    }
 
     componentDidMount() {
-        if (authentication.currentUserValue && authentication.currentUserValue['@id']) {
-            this.fetchUser();
-        }
-    }
-
-    updateCurrentUser = () => {
-        if (authentication.currentUserValue) {
-            this.fetchUser()
-        } else {
-            this.setState({
-                currentUser: false
-            })
+        if (authentication.currentUserValue && !this.props.authenticated) {
+            this.props.setAuthenticated(true);
+            this.props.retrieve(authentication.currentUserValue['@id']);
         }
     }
 
     render() {
         return(
-            <AppContext.Provider value={{ updateCurrentUser: () => this.updateCurrentUser(), currentUser: this.state.currentUser }}>
+            <AppContext.Provider value={{}}>
                 <ThemeProvider theme={theme}>
-                    <Header updateCurrentUser={() => this.updateCurrentUser()} currentUser={this.state.currentUser} {...this.props} />
+                    <Header {...this.props} />
                     <div className="my-4"></div>
                     {this.props.children}
                     <Footer {...this.props}/>
@@ -71,10 +39,14 @@ class Layout extends React.Component {
     }
 }
 const mapStateToProps = state => ({
+    authenticated: state.authentication.authenticated,
+    updated: state.user.update.updated,
+    retrieved: state.user.show.retrieved
 });
 
 const mapDispatchToProps = dispatch => ({
-    logout: () => dispatch(authentication.logout()),
+    retrieve: id => dispatch(retrieve(id)),
+    setAuthenticated: boolean => dispatch(setAuthenticated(boolean))
 });
 
 export default connect(

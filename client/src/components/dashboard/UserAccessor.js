@@ -43,7 +43,7 @@ class UserAccessor extends Component {
   render() {
     if (this.props.deleted) return <Redirect to=".." />;
 
-    const item = this.props.retrieved;
+    const user = this.props.authenticated ? (this.props.updated ? this.props.updated : this.props.retrieved) : false;
 
     return (
       <div>
@@ -64,8 +64,8 @@ class UserAccessor extends Component {
             {this.props.deleteError}
           </div>
         )}
-        {item &&
-          <Dashboard {...this.props} reloadDashboard={() => this.reloadDashboard()} user={item}/>
+        {user &&
+          <Dashboard {...this.props} reloadDashboard={() => this.reloadDashboard()} user={user}/>
         }
       </div>
     );
@@ -91,7 +91,9 @@ const mapStateToProps = state => ({
   eventSource: state.user.show.eventSource,
   deleteError: state.user.del.error,
   deleteLoading: state.user.del.loading,
-  deleted: state.user.del.deleted
+  deleted: state.user.del.deleted,
+  authenticated: state.authentication.authenticated,
+  updated: state.user.update.updated,
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -32,6 +32,7 @@ import topicRoutes from "./routes/topic";
 import joinDemandRoutes from "./routes/joindemand";
 import projectRoutes from "./routes/project";
 import DashboardPage from "./pages/DashboardPage";
+import authentication from "./reducers/authentication/authentication";
 
 const history = createBrowserHistory({
   basename: '/together/',
@@ -44,7 +45,8 @@ const store = createStore(
       project,
       message,
       topic,
-      joindemand
+      joindemand,
+      authentication
     /* Add your reducers here */
   }),
   applyMiddleware(routerMiddleware(history), thunk)

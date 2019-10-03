@@ -9,9 +9,10 @@ import { red } from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import Link from "react-router-dom/es/Link";
 import {Badge} from "@material-ui/core";
-import {AppContext} from "../../utils/AppContext";
 import projectAlreadyBoostedChecker from "../../services/projectAlreadyBoostedChecker";
 import Chip from '@material-ui/core/Chip';
+import {setAuthenticated} from "../../actions/authentication";
+import {connect} from "react-redux";
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -45,10 +46,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function ListItem(props) {
+function ListItem(props) {
     const classes = useStyles();
 
-    const context = useContext(AppContext);
+    const user = props.authenticated ? (props.updated ? props.updated : props.retrieved) : false;
 
     return (
         <div className="col-4 my-3">
@@ -76,7 +77,7 @@ export default function ListItem(props) {
                 </Link>
 
                 <CardActions className={'mt-auto'} disableSpacing>
-                    <IconButton color={context.currentUser && projectAlreadyBoostedChecker(props.item['@id'], context.currentUser.supportedProjects) ? 'secondary' : 'default'} aria-label="add to favorites" onClick={() => props.handleBoost(props.item)}>
+                    <IconButton color={user && projectAlreadyBoostedChecker(props.item['@id'], user.supportedProjects) ? 'secondary' : 'default'} aria-label="add to favorites" onClick={() => props.handleBoost(props.item)}>
                         <Badge badgeContent={props.item['likes']}>
                             <FavoriteIcon />
                         </Badge>
@@ -89,3 +90,18 @@ export default function ListItem(props) {
         </div>
     );
 }
+
+const mapStateToProps = state => ({
+    authenticated: state.authentication.authenticated,
+    updated: state.user.update.updated,
+    retrieved: state.user.show.retrieved
+});
+
+const mapDispatchToProps = dispatch => ({
+    setAuthenticated: boolean => dispatch(setAuthenticated(boolean))
+});
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(ListItem);

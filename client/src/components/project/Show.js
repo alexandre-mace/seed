@@ -32,7 +32,6 @@ class Show extends Component {
     deleted: PropTypes.object,
     del: PropTypes.func.isRequired,
   };
-  static contextType = AppContext;
 
 
   componentDidMount() {
@@ -49,36 +48,35 @@ class Show extends Component {
   };
 
   handleBoost = (item) => {
-    redirectToLoginIfNotConnected(this.props);
-    if (!projectAlreadyBoostedChecker(item['@id'], this.context.currentUser.supportedProjects)) {
-      let supportedProjects = jsonLDFlattener(this.context.currentUser.supportedProjects);
-      supportedProjects.push(item['@id']);
-      this.props.update(item, {likes: item['likes'] + 1})
-        .then(() => {
-          this.props.updateUser(this.context.currentUser, {supportedProjects: supportedProjects})
-            .then(() => {
-              this.context.updateCurrentUser();
-              this.props.retrieve(decodeURIComponent(this.props.match.params.id));
-            })
-        })
+    const user = this.props.authenticated ? (this.props.userUpdated ? this.props.userUpdated : this.props.userRetrieved) : false;
+
+    if (!user) {
+      redirectToLoginIfNotConnected(this.props);
     } else {
-      this.props.update(item, {likes: item['likes'] - 1})
-        .then(() => {
-          this.props.updateUser(this.context.currentUser, {supportedProjects: arrayRemove(jsonLDFlattener(this.context.currentUser.supportedProjects), item['@id'])})
-            .then(() => {
-              this.context.updateCurrentUser();
-              this.props.retrieve(decodeURIComponent(this.props.match.params.id));
-            })
-        })
+      if (!projectAlreadyBoostedChecker(item['@id'], user.supportedProjects)) {
+        let supportedProjects = jsonLDFlattener(user.supportedProjects);
+        supportedProjects.push(item['@id']);
+        this.props.update(item, {likes: item['likes'] + 1})
+          .then(() => {
+            this.props.updateUser(user, {supportedProjects: supportedProjects})
+          })
+      } else {
+        this.props.update(item, {likes: item['likes'] - 1})
+          .then(() => {
+            this.props.updateUser(user, {supportedProjects: arrayRemove(jsonLDFlattener(user.supportedProjects), item['@id'])})
+          })
+      }
     }
   };
 
   loggedUserHasAlreadyLikeTheProjectChecker = (item) => {
+    const user = this.props.authenticated ? (this.props.userUpdated ? this.props.userUpdated : this.props.userRetrieved) : false;
+
     let check = false;
-    if (!this.context.currentUser) {
+    if (!user) {
       return check;
     }
-    this.context.currentUser.joinDemands.forEach(joindemand => {
+    user.joinDemands.forEach(joindemand => {
       if (joindemand.relatedProject['@id'] === item['@id']) {
         check = true
       }
@@ -89,7 +87,8 @@ class Show extends Component {
   render() {
     if (this.props.deleted) return <Redirect to=".." />;
 
-    const item = this.props.retrieved;
+    const item = this.props.updated ? this.props.updated : this.props.retrieved;
+    const user = this.props.authenticated ? (this.props.userUpdated ? this.props.userUpdated : this.props.userRetrieved) : false;
 
     return (
         <div className="container">
@@ -126,7 +125,7 @@ class Show extends Component {
                       {item.pitch}
                     </Typography>
                     <div className="d-flex align-items-center">
-                      <CustomBoostButton item={item} user={this.context.currentUser} handleBoost={() => this.handleBoost(item)}/>
+                      <CustomBoostButton item={item} user={user} handleBoost={() => this.handleBoost(item)}/>
                       <Typography variant={'h6'}>
                         {item.likes}
                       </Typography>
@@ -148,27 +147,20 @@ class Show extends Component {
                         ))}
                       </div>
                     </div>
-                    <div>
-                      {(item.initiator.email !== this.context.currentUser.email) &&
+                    {this.props.authenticated ? (
                       <>
                         {this.loggedUserHasAlreadyLikeTheProjectChecker(item) ? (
                           <p>Vous avez demandé à rejoindre ce projet !</p>
                         ) : (
-                          <>
-                            {authentication.currentUserValue ? (
-                              <Create demander={authentication.currentUserValue['@id']} project={item['@id']} status={'pending'}/>
-                            ) : (
-                              <Link to="/se-connecter">
-                                <CustomMaterialButton text={'Rejoindre le projet'} color={'primary'}/>
-                              </Link>
-                            )}
-                          </>
+                          <Create demander={user['@id']} project={item['@id']} status={'pending'}/>
                         )}
                       </>
-                      }
-                    </div>
+                    ) : (
+                      <Link to="/se-connecter">
+                        <CustomMaterialButton text={'Rejoindre le projet'} color={'primary'}/>
+                      </Link>
+                    )}
                   </div>
-
                   <div className="mb-5"></div>
                   <Typography variant={'body1'}>
                     <span dangerouslySetInnerHTML={{__html: item.description}}></span>
@@ -206,7 +198,11 @@ const mapStateToProps = state => ({
   eventSource: state.project.show.eventSource,
   deleteError: state.project.del.error,
   deleteLoading: state.project.del.loading,
-  deleted: state.project.del.deleted
+  deleted: state.project.del.deleted,
+  updated: state.project.update.updated,
+  authenticated: state.authentication.authenticated,
+  userUpdated: state.user.update.updated,
+  userRetrieved: state.user.show.retrieved
 });
 
 const mapDispatchToProps = dispatch => ({

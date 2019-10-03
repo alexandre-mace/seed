@@ -7,9 +7,10 @@ import { TextField } from 'formik-material-ui';
 import {
     LinearProgress,
 } from '@material-ui/core';
-import { withRouter } from 'react-router'
-import {AppContext} from "../../utils/AppContext";
 import CustomMaterialButton from "../../utils/CustomMaterialButton";
+import {setAuthenticated} from "../../actions/authentication";
+import {connect} from "react-redux";
+import {retrieve} from "../../actions/user/show";
 
 class Register extends React.Component {
     constructor(props) {
@@ -52,10 +53,11 @@ class Register extends React.Component {
                                 authentication.login(fields.email, fields.password)
                                     .then(
                                         user => {
-                                            this.context.updateCurrentUser();
                                             setSubmitting(false);
                                             resetForm(initialValues);
-                                            this.props.history.push('/')
+                                            this.props.history.push('/');
+                                            this.props.setAuthenticated(true);
+                                            this.props.retrieve(authentication.currentUserValue['@id']);
                                         },
                                         error => {
                                             setSubmitting(false);
@@ -108,6 +110,15 @@ class Register extends React.Component {
         );
     }
 }
-export default withRouter(Register);
-Register.contextType = AppContext;
+const mapStateToProps = state => ({
+});
 
+const mapDispatchToProps = dispatch => ({
+  retrieve: id => dispatch(retrieve(id)),
+  setAuthenticated: boolean => dispatch(setAuthenticated(boolean))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Register);

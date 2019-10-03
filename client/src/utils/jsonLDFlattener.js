@@ -1,3 +1,8 @@
 export default function jsonLDFlattner(values) {
-  return values.map(value => (value['@id']))
+  return values.map(value => {
+    if (typeof value === 'object') {
+      return value['@id']
+    }
+    return value;
+  })
 }
