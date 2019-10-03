@@ -33,7 +33,9 @@ import joinDemandRoutes from "./routes/joindemand";
 import projectRoutes from "./routes/project";
 import DashboardPage from "./pages/DashboardPage";
 
-const history = createBrowserHistory();
+const history = createBrowserHistory({
+  basename: '/together/',
+});
 const store = createStore(
   combineReducers({
     router: connectRouter(history),
