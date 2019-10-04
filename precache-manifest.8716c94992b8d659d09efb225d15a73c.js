@@ -4,7 +4,7 @@ self.__precacheManifest = [
     "url": "/together/static/media/fontawesome-webfont.af7ae505.woff2"
   },
   {
-    "revision": "c745c1ae1f436f98ae19",
+    "revision": "1ec73367e661549179cf",
     "url": "/together/static/css/main.ed1006f1.chunk.css"
   },
   {
@@ -20,12 +20,8 @@ self.__precacheManifest = [
     "url": "/together/static/js/2.f400408e.chunk.js"
   },
   {
-    "revision": "c745c1ae1f436f98ae19",
-    "url": "/together/static/js/main.4ab59aaa.chunk.js"
-  },
-  {
-    "revision": "fee66e712a8a08eef5805a46892932ad",
-    "url": "/together/static/media/fontawesome-webfont.fee66e71.woff"
+    "revision": "1ec73367e661549179cf",
+    "url": "/together/static/js/main.6e9605bb.chunk.js"
   },
   {
     "revision": "674f50d287a8c48dc19ba404d20fe713",
@@ -36,11 +32,15 @@ self.__precacheManifest = [
     "url": "/together/static/media/fontawesome-webfont.b06871f2.ttf"
   },
   {
+    "revision": "fee66e712a8a08eef5805a46892932ad",
+    "url": "/together/static/media/fontawesome-webfont.fee66e71.woff"
+  },
+  {
     "revision": "75d514da89adde757824",
     "url": "/together/static/css/2.18667a6b.chunk.css"
   },
   {
-    "revision": "c7e8a0b975f22f4546d6294e470d41b7",
+    "revision": "9be527f18c87f513e370025765ff965a",
     "url": "/together/index.html"
   }
 ];
