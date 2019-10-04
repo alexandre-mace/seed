@@ -61,8 +61,6 @@ class HighlightedProjects extends Component {
               })
           })
       } else {
-        console.log('alreadyLiked')
-
         this.props.update(item, {likes: item['likes'] - 1})
           .then(() => {
             this.props.updateUser(user, {supportedProjects: arrayRemove(jsonLDFlattener(user.supportedProjects), item['@id'])})
@@ -78,7 +76,6 @@ class HighlightedProjects extends Component {
   };
 
   render() {
-    console.log(this.props)
     return (
       <div className="container">
         <div className="row">
