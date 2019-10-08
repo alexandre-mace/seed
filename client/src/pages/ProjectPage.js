@@ -12,7 +12,7 @@ export default class ProjectPage extends React.Component {
   render() {
     return (
       <>
-        <Layout>
+        <Layout {...this.props}>
           <Show {...this.props} />
         </Layout>
       </>

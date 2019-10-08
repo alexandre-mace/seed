@@ -12,7 +12,7 @@ export default class InfoPage extends React.Component {
   render() {
     return (
       <>
-        <Layout>
+          <Layout {...this.props}>
           <div className="container">
               <div className="row">
                   <div className="col-12">

@@ -29,7 +29,7 @@ class Initiate extends Component {
             );
 
       return (
-        <Layout>
+        <Layout {...this.props}>
           <div className="container">
             <div className="row">
               <div className="col">

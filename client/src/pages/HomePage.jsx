@@ -14,7 +14,7 @@ export default class HomePage extends React.Component {
     render() {
         return (
             <>
-                <Layout>
+                <Layout {...this.props}>
                     <div className="container">
                         <div className="row">
                             <div className="col">
@@ -25,7 +25,9 @@ export default class HomePage extends React.Component {
                         </div>
                     </div>
                     <HighlightedProjects {...this.props} />
-                    <CreateOrJoin/>
+                    <div className="d-none d-md-block">
+                        <CreateOrJoin/>
+                    </div>
                 </Layout>
             </>
         )
