@@ -5,7 +5,7 @@ export default class Footer extends React.Component {
     render() {
         return (
             <div className="container mt-auto">
-                <div className="row py-3">
+                <div className="row py-3 mt-5">
                     <div className="col">
                         <div className="d-flex justify-content-center">
                             <ul>

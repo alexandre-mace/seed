@@ -44,33 +44,36 @@ class List extends Component {
   }
 
   handleBoost = (item) => {
-    redirectToLoginIfNotConnected(this.props);
-    if (!projectAlreadyBoostedChecker(item['@id'], this.context.currentUser.supportedProjects)) {
-      let supportedProjects = jsonLDFlattener(this.context.currentUser.supportedProjects);
-      supportedProjects.push(item['@id']);
-      this.props.update(item, {likes: item['likes'] + 1})
-        .then(() => {
-          this.props.updateUser(this.context.currentUser, {supportedProjects: supportedProjects})
-            .then(() => {
-              this.context.updateCurrentUser();
-              this.props.list(
-                this.props.match.params.page &&
-                decodeURIComponent(this.props.match.params.page)
-              );
-            })
-        })
+    const user = this.props.authenticated ? (this.props.userUpdated ? this.props.userUpdated : this.props.userRetrieved) : false;
+
+    if (!user) {
+      redirectToLoginIfNotConnected(this.props);
     } else {
-      this.props.update(item, {likes: item['likes'] - 1})
-        .then(() => {
-          this.props.updateUser(this.context.currentUser, {supportedProjects: arrayRemove(jsonLDFlattener(this.context.currentUser.supportedProjects), item['@id'])})
-            .then(() => {
-              this.context.updateCurrentUser();
-              this.props.list(
-                this.props.match.params.page &&
-                decodeURIComponent(this.props.match.params.page)
-              );
-            })
-        })
+      if (!projectAlreadyBoostedChecker(item['@id'], user.supportedProjects)) {
+        let supportedProjects = jsonLDFlattener(user.supportedProjects);
+        supportedProjects.push(item['@id']);
+        this.props.update(item, {likes: item['likes'] + 1})
+          .then(() => {
+            this.props.updateUser(user, {supportedProjects: supportedProjects})
+              .then(() => {
+                this.props.list(
+                  this.props.match.params.page &&
+                  decodeURIComponent(this.props.match.params.page)
+                );
+              })
+          })
+      } else {
+        this.props.update(item, {likes: item['likes'] - 1})
+          .then(() => {
+            this.props.updateUser(user, {supportedProjects: arrayRemove(jsonLDFlattener(user.supportedProjects), item['@id'])})
+              .then(() => {
+                this.props.list(
+                  this.props.match.params.page &&
+                  decodeURIComponent(this.props.match.params.page)
+                );
+              })
+          })
+      }
     }
   };
 
@@ -166,7 +169,11 @@ const mapStateToProps = state => {
     eventSource,
     deletedItem
   } = state.project.list;
-  return { retrieved, loading, error, eventSource, deletedItem };
+  return { retrieved, loading, error, eventSource, deletedItem,
+    authenticated: state.authentication.authenticated,
+    userUpdated: state.user.update.updated,
+    userRetrieved: state.user.show.retrieved
+  };
 };
 
 const mapDispatchToProps = dispatch => ({

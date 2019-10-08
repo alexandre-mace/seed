@@ -57,41 +57,19 @@ export default function MyProject(props) {
   };
 
   return (
-          <div className={classes.root}>
-            <AppBar position="static" color="default">
-              <Tabs
-                value={value}
-                onChange={handleChange}
-                indicatorColor="primary"
-                textColor="primary"
-                variant="fullWidth"
-                scrollButtons="auto"
-                aria-label="scrollable auto tabs example"
-              >
-                <Tab label={`Les membres (${props.project.members.length})`} {...a11yProps(0)} />
-                <Tab label={`Les Demandes (${props.project.joinDemands.length})`} {...a11yProps(1)} />
-              </Tabs>
-            </AppBar>
-            <TabPanel value={value} index={0}>
-              <>
-                <Link to={`les-projets/${encodeURIComponent(props.project['@id'])}`}>
-                  <Typography variant="h6" gutterBottom>
-                    {props.project.pitch}
-                  </Typography>
-                </Link>
-                <MyProjectMembers {...props} project={props.project} />
-              </>
-            </TabPanel>
-            <TabPanel value={value} index={1}>
-              <>
-                <Link to={`les-projets/${encodeURIComponent(props.project['@id'])}`}>
-                  <Typography variant="h6" gutterBottom>
-                    {props.project.pitch}
-                  </Typography>
-                </Link>
-                <MyProjectDemands {...props} project={props.project}/>
-              </>
-            </TabPanel>
-          </div>
-  );
+    <div className="d-flex flex-column flex-md-row justify-content-around">
+      <div className="d-flex flex-column">
+        <Typography variant="subtitle2">
+          Les demandes
+        </Typography>
+        <MyProjectDemands {...props} project={props.project}/>
+      </div>
+      <div className="d-flex flex-column">
+        <Typography variant="subtitle2">
+        Les membres
+        </Typography>
+        <MyProjectMembers {...props} project={props.project} />
+      </div>
+</div>
+);
 }

@@ -17,8 +17,8 @@ export default function MyDemands(props) {
                   </Typography>
                 </Link>
               </div>
-              <div className="col text-center">
-                <p>{demand.status}</p>
+              <div className="col d-flex text-center">
+                <p className="m-auto">{demand.status}</p>
               </div>
             </div>
           ))}

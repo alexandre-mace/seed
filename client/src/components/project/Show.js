@@ -88,6 +88,9 @@ class Show extends Component {
     const item = this.props.updated ? this.props.updated : this.props.retrieved;
     const user = this.props.authenticated ? (this.props.userUpdated ? this.props.userUpdated : this.props.userRetrieved) : false;
 
+    if (this.props.authenticated) {
+      console.log(user['@id'])
+    }
     return (
         <div className="container">
           <div className="row">
