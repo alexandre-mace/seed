@@ -74,7 +74,7 @@ export function update(item, values) {
           .then(retrieved => ({ retrieved, hubURL: extractHubURL(response) }))
       )
       .then(({ retrieved, hubURL }) => {
-        retrieved = normalize(retrieved);
+        // retrieved = normalize(retrieved);
 
         dispatch(updateLoading(false));
         dispatch(updateSuccess(retrieved));
