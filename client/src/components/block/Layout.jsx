@@ -8,7 +8,7 @@ import {ThemeProvider} from '@material-ui/styles';
 import {setAuthenticated} from "../../actions/authentication";
 import {connect} from "react-redux";
 import {authentication} from "../../services/authentication";
-import {retrieve} from "../../actions/user/show";
+import { retrieve, reset } from '../../actions/user/show';
 
 const theme = createMuiTheme({
     palette: {
@@ -17,15 +17,13 @@ const theme = createMuiTheme({
 });
 
 class Layout extends React.Component {
-
-    componentDidMount() {
-        if (authentication.currentUserValue && !this.props.authenticated) {
-            this.props.setAuthenticated(true);
-            this.props.retrieve(authentication.currentUserValue['@id']);
-        }
-    }
-
     render() {
+        if (authentication.currentUserValue && (!this.props.authenticated || !this.props.retrieve)) {
+            this.props.retrieve(authentication.currentUserValue['@id'])
+                .then(() => {
+                    this.props.setAuthenticated(true);
+                })
+        }
         return(
             <AppContext.Provider value={{}}>
                 <ThemeProvider theme={theme}>
@@ -41,12 +39,13 @@ class Layout extends React.Component {
 const mapStateToProps = state => ({
     authenticated: state.authentication.authenticated,
     updated: state.user.update.updated,
-    retrieved: state.user.show.retrieved
+    retrieved: state.user.show.retrieved,
 });
 
 const mapDispatchToProps = dispatch => ({
     retrieve: id => dispatch(retrieve(id)),
-    setAuthenticated: boolean => dispatch(setAuthenticated(boolean))
+    setAuthenticated: boolean => dispatch(setAuthenticated(boolean)),
+    reset: eventSource => dispatch(reset(eventSource)),
 });
 
 export default connect(

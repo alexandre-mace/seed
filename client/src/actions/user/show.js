@@ -20,7 +20,6 @@ export function success(retrieved) {
 export function retrieve(id) {
   return dispatch => {
     dispatch(loading(true));
-
     return fetch(id)
       .then(response =>
         response

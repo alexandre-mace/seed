@@ -10,12 +10,10 @@ import CustomBoostButton from "../../utils/CustomBoostButton";
 import redirectToLoginIfNotConnected from "../../utils/redirectToLoginIfNotConnected";
 import {update as updateUser} from "../../actions/user/update";
 import arrayRemove from "../../utils/arrayRemove";
-import {AppContext} from "../../utils/AppContext";
 import projectAlreadyBoostedChecker from "../../services/projectAlreadyBoostedChecker";
 import Chip from "@material-ui/core/Chip";
 import Forum from "./Forum";
 import {Create} from "../joindemand";
-import {authentication} from "../../services/authentication";
 import CustomMaterialButton from "../../utils/CustomMaterialButton";
 import jsonLDFlattener from "../../utils/jsonLDFlattener";
 
