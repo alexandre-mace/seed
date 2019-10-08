@@ -1,7 +1,7 @@
 self.__precacheManifest = [
   {
-    "revision": "af7ae505a9eed503f8b8e6982036873e",
-    "url": "/together/static/media/fontawesome-webfont.af7ae505.woff2"
+    "revision": "674f50d287a8c48dc19ba404d20fe713",
+    "url": "/together/static/media/fontawesome-webfont.674f50d2.eot"
   },
   {
     "revision": "767eb09531a259229885",
@@ -24,8 +24,8 @@ self.__precacheManifest = [
     "url": "/together/static/js/main.29fe9484.chunk.js"
   },
   {
-    "revision": "674f50d287a8c48dc19ba404d20fe713",
-    "url": "/together/static/media/fontawesome-webfont.674f50d2.eot"
+    "revision": "af7ae505a9eed503f8b8e6982036873e",
+    "url": "/together/static/media/fontawesome-webfont.af7ae505.woff2"
   },
   {
     "revision": "fee66e712a8a08eef5805a46892932ad",
