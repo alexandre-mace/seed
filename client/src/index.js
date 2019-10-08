@@ -35,7 +35,7 @@ import DashboardPage from "./pages/DashboardPage";
 import authentication from "./reducers/authentication/authentication";
 
 const history = createBrowserHistory({
-  basename: '/together/',
+  basename: process.env.PUBLIC_URL
 });
 const store = createStore(
   combineReducers({
@@ -62,10 +62,10 @@ ReactDOM.render(
         { topicRoutes }
         { projectRoutes }
         { joinDemandRoutes }
-        <Route path="/tableau-de-bord" component={DashboardPage} strict={true} exact={true} />
-        <Route path="/se-connecter" component={LoginPage} strict={true} exact={true} />
-        <Route path="/info" component={InfoPage} strict={true} exact={true} />
-        <Route path="/help" component={HelpPage} strict={true} exact={true} />
+        <Route path="/tableau-de-bord" component={DashboardPage} />
+        <Route path="/se-connecter" component={LoginPage} />
+        <Route path="/info" component={InfoPage} />
+        <Route path="/help" component={HelpPage} />
         <Route path="/" component={HomePage} />
         <Route render={() => <h1>Not Found</h1>} />
       </Switch>

@@ -10,7 +10,7 @@ export default [
   <PrivateRoute path="/initier-un-projet" component={Initiate} exact key="initiate" />,
   <Route path="/projects/create" component={Create} exact key="create" />,
   <Route path="/projects/edit/:id" component={Update} exact key="update" />,
-  <Route path="/les-projets/:id" component={ProjectPage} exact key="show" />,
-  <Route path="/les-projets" component={ListingPage} exact strict key="list" />,
-  <Route path="/projects/:page" component={List} exact strict key="page" />
+  <Route path="/les-projets/:id" component={ProjectPage} key="show" />,
+  <Route path="/les-projets" component={ListingPage} key="list" />,
+  <Route path="/projects/:page" component={List} exact key="page" />
 ];
