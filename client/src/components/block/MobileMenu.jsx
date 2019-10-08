@@ -16,6 +16,10 @@ export default function MobileMenu(props) {
         setAnchorEl(null);
     };
 
+    const handleLogoutFromMobileMenu = () => {
+        setAnchorEl(null);
+        props.handleLogout()
+    }
 
     return (
         <div>
@@ -53,7 +57,7 @@ export default function MobileMenu(props) {
                     Qui est Together
                     </Link>
                 </MenuItem>
-                <MenuItem onClick={() => props.handleLogout()}>
+                <MenuItem onClick={() => handleLogoutFromMobileMenu()}>
                     Se déconnecter
                 </MenuItem>
             </Menu>

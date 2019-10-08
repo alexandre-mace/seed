@@ -96,14 +96,14 @@ class Header extends React.Component {
                                 </Link>
                             )}
                         </div>
-                        <MobileMenu/>
+                        <MobileMenu handleLogout={() => this.handleLogout()}/>
                     </div>
                     <div className="row">
                         <div className="col">
                             <CustomSearchBar/>
                         </div>
                     </div>
-                    <CustomBottomNavigation {...this.props} handleLogout={() => this.handleLogout()}/>
+                    <CustomBottomNavigation user={user} {...this.props}/>
                 </div>
             </>
         )

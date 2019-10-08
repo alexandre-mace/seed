@@ -33,6 +33,7 @@ import joinDemandRoutes from "./routes/joindemand";
 import projectRoutes from "./routes/project";
 import DashboardPage from "./pages/DashboardPage";
 import authentication from "./reducers/authentication/authentication";
+import {PrivateRoute} from "./utils/PrivateRoute";
 
 const history = createBrowserHistory({
   basename: process.env.PUBLIC_URL
@@ -62,7 +63,7 @@ ReactDOM.render(
         { topicRoutes }
         { projectRoutes }
         { joinDemandRoutes }
-        <Route path="/tableau-de-bord" component={DashboardPage} />
+        <PrivateRoute path="/tableau-de-bord" component={DashboardPage} />
         <Route path="/se-connecter" component={LoginPage} />
         <Route path="/info" component={InfoPage} />
         <Route path="/help" component={HelpPage} />
