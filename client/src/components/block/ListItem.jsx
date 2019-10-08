@@ -52,7 +52,7 @@ function ListItem(props) {
     const user = props.authenticated ? (props.updated ? props.updated : props.retrieved) : false;
 
     return (
-        <div className="col-4 my-3">
+        <div className="col-md-4 my-3">
             <Card key={props.item['@id']} className={classes.card}>
                 <Link to={`les-projets/${encodeURIComponent(props.item['@id'])}`}>
                     <CardHeader
