@@ -24,6 +24,10 @@ class Layout extends React.Component {
                     this.props.setAuthenticated(true);
                 })
         }
+        if (!localStorage.getItem('bienvenue')) {
+            localStorage.setItem('bienvenue', 'true')
+            this.props.history.push('/bienvenue')
+        }
         return(
             <AppContext.Provider value={{}}>
                 <ThemeProvider theme={theme}>

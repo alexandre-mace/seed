@@ -66,6 +66,20 @@ class Show extends Component {
       }
     }
   };
+  projectOwnerChecker = (item) => {
+    const user = this.props.authenticated ? (this.props.userUpdated ? this.props.userUpdated : this.props.userRetrieved) : false;
+
+    let check = false;
+    if (!user) {
+      return check;
+    }
+    user.initiatedProjects.forEach(initiatedProject => {
+      if (initiatedProject['@id'] === item['@id']) {
+        check = true
+      }
+    });
+    return check;
+  }
 
   loggedUserHasAlreadyLikeTheProjectChecker = (item) => {
     const user = this.props.authenticated ? (this.props.userUpdated ? this.props.userUpdated : this.props.userRetrieved) : false;
@@ -88,9 +102,6 @@ class Show extends Component {
     const item = this.props.updated ? this.props.updated : this.props.retrieved;
     const user = this.props.authenticated ? (this.props.userUpdated ? this.props.userUpdated : this.props.userRetrieved) : false;
 
-    if (this.props.authenticated) {
-      console.log(user['@id'])
-    }
     return (
         <div className="container">
           <div className="row">
@@ -135,7 +146,11 @@ class Show extends Component {
                   <div className="d-flex justify-content-between align-items-center">
                     <div className="d-flex flex-column justify-content-between">
                       <Typography variant={'h5'} gutterBottom>
-                        {item.initiator.firstName}
+                        {item.initiator &&
+                          <>
+                          {item.initiator.firstName}
+                          </>
+                        }
                       </Typography>
                       <div className="d-flex flex-wrap">
                         {item.categories.map((category, index) => (
@@ -148,12 +163,19 @@ class Show extends Component {
                         ))}
                       </div>
                     </div>
-                    {this.props.authenticated ? (
+                    {(this.props.authenticated && user) ? (
                       <>
-                        {this.loggedUserHasAlreadyLikeTheProjectChecker(item) ? (
-                          <p>Vous avez demandé à rejoindre ce projet !</p>
+                        {this.projectOwnerChecker(item) ? (
+                          <>
+                          </>
                         ) : (
-                          <Create demander={user['@id']} project={item['@id']} status={'pending'}/>
+                          <>
+                            {this.loggedUserHasAlreadyLikeTheProjectChecker(item) ? (
+                              <p>Vous avez demandé à rejoindre ce projet !</p>
+                            ) : (
+                              <Create {...this.props} demander={user['@id']} project={item['@id']} status={'pending'}/>
+                            )}
+                          </>
                         )}
                       </>
                     ) : (

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Form from './Form';
 import { create, reset } from '../../actions/joindemand/create';
 import {AppContext} from "../../utils/AppContext";
+import {authentication} from "../../services/authentication";
 
 class Create extends Component {
   static propTypes = {
@@ -25,7 +26,8 @@ class Create extends Component {
     values['status'] = this.props.status;
 
     this.props.create(values).then(() => {
-      this.context.updateCurrentUser();
+      this.props.history.push('/confirmation-demande-joindre');
+      this.props.retrieve(authentication.currentUserValue['@id'])
     })
   }
 

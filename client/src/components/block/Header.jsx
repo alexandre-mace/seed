@@ -54,7 +54,7 @@ class Header extends React.Component {
                         </div>
 
                         <ul className="col d-flex">
-                            <li className="col pl-0 align-content-center">
+                            <li className="col pl-0 d-flex align-content-center">
                                 <div className="m-auto">
                                     <Link to="/les-projets">Les projets</Link>
                                 </div>
