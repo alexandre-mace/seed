@@ -90,6 +90,7 @@ class User implements UserInterface
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Project", mappedBy="members")
+     * @Groups({"user"})
      */
     private $joinedProjects;
 

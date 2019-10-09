@@ -57,7 +57,7 @@ class Project
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"project"})
+     * @Groups({"project", "user"})
      */
     private $likes = 0;
 
@@ -77,7 +77,7 @@ class Project
 
     /**
      * @ORM\Column(type="json_array", nullable=true)
-     * @Groups({"project"})
+     * @Groups({"project", "user"})
      */
     private $categories;
 
