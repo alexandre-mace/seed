@@ -84,12 +84,14 @@ class User implements UserInterface
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Project", mappedBy="supporters")
+     * @MaxDepth(1)
      * @Groups({"user"})
      */
     private $supportedProjects;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Project", mappedBy="members")
+     * @MaxDepth(1)
      * @Groups({"user"})
      */
     private $joinedProjects;
