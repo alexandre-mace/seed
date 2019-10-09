@@ -58,6 +58,7 @@ class Project
     /**
      * @ORM\Column(type="integer")
      * @Groups({"project", "user"})
+     * @Assert\GreaterThanOrEqual(0)
      */
     private $likes = 0;
 
