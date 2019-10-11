@@ -22,7 +22,7 @@ export function list(page = '/projects', customQuery = '') {
   return dispatch => {
     dispatch(loading(true));
     dispatch(error(''));
-    fetch(page + customQuery)
+    return fetch(page + customQuery)
       .then(response =>
         response
           .json()
