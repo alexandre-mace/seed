@@ -12,7 +12,6 @@ export default class ConfirmJoinDemandPage extends React.Component {
   }
 
   render() {
-    console.log(this.props.history)
     return (
       <>
         <Layout {...this.props}>

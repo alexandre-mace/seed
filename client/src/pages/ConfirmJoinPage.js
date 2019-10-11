@@ -2,18 +2,9 @@ import React from 'react';
 import Layout from "../components/block/Layout";
 import {Typography} from "@material-ui/core";
 import CustomMaterialButton from "../utils/CustomMaterialButton";
-import {Link} from "react-router-dom";
 
 export default class ConfirmJoinPage extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-    };
-  }
-
   render() {
-    console.log(this.props.history)
-
     return (
       <>
         <Layout {...this.props}>
