@@ -47,7 +47,7 @@ class Form extends Component {
 
   render() {
     return (
-      <form onSubmit={this.props.handleSubmit} className="d-flex align-items-center">
+      <form onSubmit={this.props.handleSubmit} className="d-flex flex-column flex-md-row align-items-center mb-3">
         <div className="w-100">
           <Field
             component={this.renderField}
@@ -58,7 +58,7 @@ class Form extends Component {
             required={true}
           />
         </div>
-        <div className="ml-3">
+        <div className="ml-3 mt-2">
           <CustomMaterialButton type="submit" color={'primary'} text={'Poster'}/>
         </div>
       </form>
