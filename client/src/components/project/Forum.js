@@ -22,7 +22,7 @@ function TabPanel(props) {
       aria-labelledby={`scrollable-force-tab-${index}`}
       {...other}
     >
-      <Box p={3}>{children}</Box>
+      <Box p={2}>{children}</Box>
     </Typography>
   );
 }
@@ -42,6 +42,8 @@ function a11yProps(index) {
 
 const useStyles = makeStyles(theme => ({
   root: {
+    width: '100vw',
+    marginLeft: '-15px'
   },
 }));
 
@@ -84,7 +86,7 @@ export default function Forum(props) {
           <TabPanel value={value} key={index} index={index} dir={theme.direction}>
             <Create topic={topic} project={props.project}/>
             {topic.messages.length > 0 ? (
-              <div className="mt-4">
+              <div className="mt-3">
               {topic.messages.map((message, index) => (
                   <div key={index} className={"mb-3"}>
                     <CustomShow message={message}/>

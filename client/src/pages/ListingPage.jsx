@@ -17,7 +17,7 @@ export default class ListingPage extends React.Component {
             <div className="container">
                 <div className="row">
                     <div className="col-12">
-                        <Typography variant="h2" component="h2" gutterBottom>
+                        <Typography variant="h4" gutterBottom>
                             Les projets
                         </Typography>
                     </div>
