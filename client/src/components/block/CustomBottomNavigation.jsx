@@ -4,7 +4,6 @@ import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import ListIcon from '@material-ui/icons/List';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import DashboardIcon from '@material-ui/icons/Dashboard';
 import AddIcon from '@material-ui/icons/Add';
 
 const useStyles = makeStyles({
@@ -21,7 +20,7 @@ export default function CustomBottomNavigation(props) {
     const classes = useStyles();
 
     let defaultValue = 0;
-    if (['/mes-projets', '/mes-favoris', '/initier-un-projet', '/tableau-de-bord'].includes(props.history.location.pathname)) {
+    if (['/les-projets', '/mes-projets', '/mes-favoris', '/initier-un-projet'].includes(props.history.location.pathname)) {
         defaultValue = props.history.location.pathname;
     }
 
@@ -37,10 +36,10 @@ export default function CustomBottomNavigation(props) {
             showLabels
             className={classes.root}
         >
+            <BottomNavigationAction value={'/les-projets'} label="Les projets" icon={<ListIcon />} />
             <BottomNavigationAction value={'/mes-projets'} label="Mes projets" icon={<ListIcon />} />
             <BottomNavigationAction value={'/mes-favoris'} label="Favoris" icon={<FavoriteIcon />} />
             <BottomNavigationAction value={'/initier-un-projet'} label="Initier" icon={<AddIcon />} />
-            <BottomNavigationAction value={'/tableau-de-bord'} label="Tableau de bord" icon={<DashboardIcon />} />
         </BottomNavigation>
     );
 }
