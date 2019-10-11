@@ -27,9 +27,7 @@ export default function MyProjectDemands(props) {
   };
 
   return (
-    <div className="container">
-      <div className="row">
-        <div className="col">
+        <div>
           {props.project && (
             <>
               {props.project.joinDemands.length > 0 ? (
@@ -73,8 +71,6 @@ export default function MyProjectDemands(props) {
           )}
 
         </div>
-      </div>
-    </div>
   );
 }
 
