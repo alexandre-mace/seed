@@ -32,7 +32,7 @@ class Layout extends React.Component {
             <AppContext.Provider value={{}}>
                 <ThemeProvider theme={theme}>
                     <Header {...this.props} />
-                    <div className="my-4"></div>
+                    <div className="my-3 my-md-5 "></div>
                     {this.props.children}
                     <Footer {...this.props}/>
                 </ThemeProvider>
