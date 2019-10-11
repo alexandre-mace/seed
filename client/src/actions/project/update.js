@@ -63,6 +63,12 @@ export function update(item, values) {
     dispatch(createSuccess(null));
     dispatch(updateLoading(true));
 
+    if (values.likes !== undefined) {
+      if (values.likes < 0) {
+        values.likes = 0;
+      }
+    }
+
     return fetch(item['@id'], {
       method: 'PUT',
       headers: new Headers({ 'Content-Type': 'application/ld+json' }),
