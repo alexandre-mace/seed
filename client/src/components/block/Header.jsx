@@ -8,6 +8,7 @@ import CustomMaterialButton from "../../utils/CustomMaterialButton";
 import {setAuthenticated} from "../../actions/authentication";
 import CustomBottomNavigation from "./CustomBottomNavigation";
 import MobileMenu from "./MobileMenu";
+import {CustomLoader} from "./CustomLoader";
 
 class Header extends React.Component {
     handleLogout = () => {
@@ -23,12 +24,19 @@ class Header extends React.Component {
                 <div className="container-fluid d-none d-md-block">
                     <div className="row py-3">
                         <div className="col d-flex align-items-center ">
-                            {user ? (
-                                <Link to="/">
-                                    <Typography variant="h6" noWrap>
-                                        Bonjour {user.firstName}
-                                    </Typography>
-                                </Link>
+                            {authentication.currentUserValue ? (
+                                <>
+                                    {user &&
+                                    <Link to="/">
+                                        <Typography variant="h6" noWrap>
+                                            Bonjour {user.firstName}
+                                        </Typography>
+                                    </Link>
+                                    }
+                                    {!user &&
+                                    <CustomLoader size={20}/>
+                                    }
+                                </>
                             ) : (
                                 <Link to="/">
                                     <Typography variant="h6" noWrap>
@@ -82,12 +90,19 @@ class Header extends React.Component {
                 <div className="container-fluid py-3 d-block d-md-none">
                     <div className="row">
                         <div className="col d-flex align-items-center ">
-                            {user ? (
-                                <Link to="/">
-                                    <Typography variant="h6" noWrap>
-                                        Bonjour {user.firstName}
-                                    </Typography>
-                                </Link>
+                            {authentication.currentUserValue ? (
+                                <>
+                                    {user &&
+                                    <Link to="/">
+                                        <Typography variant="h6" noWrap>
+                                            Bonjour {user.firstName}
+                                        </Typography>
+                                    </Link>
+                                    }
+                                    {!user &&
+                                    <CustomLoader size={20}/>
+                                    }
+                                </>
                             ) : (
                                 <Link to="/">
                                     <Typography variant="h6" noWrap>
@@ -96,7 +111,7 @@ class Header extends React.Component {
                                 </Link>
                             )}
                         </div>
-                        <MobileMenu handleLogout={() => this.handleLogout()}/>
+                        <MobileMenu user={user} handleLogout={() => this.handleLogout()}/>
                     </div>
                     <div className="row">
                         <div className="col">

@@ -1,14 +1,17 @@
 import React from 'react';
 import {Link} from "react-router-dom";
 import {Typography} from "@material-ui/core";
+import {connect} from "react-redux";
 
-export default function MyDemands(props) {
+function MyDemands(props) {
+
+  const user = props.authenticated ? (props.updated ? props.updated : props.retrieved) : false;
+
   return (
     <>
-      {}
-      {props.demands && props.demands.length > 0 ? (
+      {user && user.demands && user.demands.length > 0 ? (
         <>
-          {props.demands.map((demand, index) => (
+          {user.demands.map((demand, index) => (
             <div key={index} className="d-flex justify-content-around">
               <div className="col text-center">
                 <Link to={`les-projets/${encodeURIComponent(demand.relatedProject['@id'])}`}>
@@ -24,8 +27,21 @@ export default function MyDemands(props) {
           ))}
         </>
       ) : (
-        <p>Vous avez fait aucune demande</p>
+        <div className="col">
+          <p>Vous n'avez fait aucune demande.</p>
+        </div>
       )}
     </>
   );
 }
+
+const mapStateToProps = state => ({
+  retrieved: state.user.show.retrieved,
+  authenticated: state.authentication.authenticated,
+  updated: state.user.update.updated,
+});
+
+export default connect(
+  mapStateToProps
+)(MyDemands);
+
