@@ -48,8 +48,8 @@ export default function MobileMenu(props) {
                     </Link>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
-                    <Link to="/tableau-de-bord">
-                    Tableau de bord
+                    <Link to="/mes-demandes">
+                    Mes demandes
                     </Link>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
@@ -57,9 +57,17 @@ export default function MobileMenu(props) {
                     Qui est Together
                     </Link>
                 </MenuItem>
-                <MenuItem onClick={() => handleLogoutFromMobileMenu()}>
-                    Se déconnecter
-                </MenuItem>
+                {props.user ? (
+                    <MenuItem onClick={() => handleLogoutFromMobileMenu()}>
+                        Se déconnecter
+                    </MenuItem>
+                ) : (
+                    <MenuItem onClick={handleClose}>
+                        <Link to="/tableau-de-bord">
+                            Se connecter
+                        </Link>
+                    </MenuItem>
+                )}
             </Menu>
         </div>
     );
