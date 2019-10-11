@@ -23,6 +23,12 @@ class List extends Component {
     reset: PropTypes.func.isRequired
   };
   static contextType = AppContext;
+  constructor(props){
+    super(props);
+    this.state = {
+      liking: false
+    }
+  }
 
   componentDidMount() {
     this.props.list(
@@ -52,6 +58,7 @@ class List extends Component {
       if (!projectAlreadyBoostedChecker(item['@id'], user.supportedProjects)) {
         let supportedProjects = jsonLDFlattener(user.supportedProjects);
         supportedProjects.push(item['@id']);
+        this.setState({liking: true});
         this.props.update(item, {likes: item['likes'] + 1})
           .then(() => {
             this.props.updateUser(user, {supportedProjects: supportedProjects})
@@ -59,10 +66,14 @@ class List extends Component {
                 this.props.list(
                   this.props.match.params.page &&
                   decodeURIComponent(this.props.match.params.page)
-                );
+                )
+                  .then(() => {
+                    this.setState({liking: false});
+                  });
               })
           })
       } else {
+        this.setState({liking: true});
         this.props.update(item, {likes: item['likes'] - 1})
           .then(() => {
             this.props.updateUser(user, {supportedProjects: arrayRemove(jsonLDFlattener(user.supportedProjects), item['@id'])})
@@ -70,7 +81,10 @@ class List extends Component {
                 this.props.list(
                   this.props.match.params.page &&
                   decodeURIComponent(this.props.match.params.page)
-                );
+                )
+                  .then(() => {
+                    this.setState({liking: false});
+                  });
               })
           })
       }
@@ -94,7 +108,7 @@ class List extends Component {
           <div className="row">
             {this.props.retrieved &&
             this.props.retrieved['hydra:member'].map(item => (
-              <ListItem key={item.id} item={item} handleBoost={() => this.handleBoost(item)}/>
+              <ListItem key={item.id} item={item} handleBoost={() => this.state.liking ? null : this.handleBoost(item)}/>
             ))}
 
           </div>

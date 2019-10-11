@@ -5,7 +5,8 @@ import Initiate from "../components/project/Initiate";
 import ListingPage from "../pages/ListingPage";
 import {PrivateRoute} from "../utils/PrivateRoute";
 import ProjectPage from "../pages/ProjectPage";
-import OwnedProjectsPage from "../pages/OwnedProjectsPage";
+import MemberProjectsPage from "../pages/MemberProjectsPage";
+import FavoriteProjectsPage from "../pages/FavoriteProjectsPage";
 
 export default [
   <PrivateRoute path="/initier-un-projet" component={Initiate} exact key="initiate" />,
@@ -13,6 +14,7 @@ export default [
   <Route path="/projects/edit/:id" component={Update} exact key="update" />,
   <Route path="/les-projets/:id" component={ProjectPage} key="show" />,
   <Route path="/les-projets" component={ListingPage} key="list" />,
-  <PrivateRoute path="/mes-projets" component={OwnedProjectsPage} key="own-projects-list" />,
+  <PrivateRoute path="/mes-projets" component={MemberProjectsPage} key="member-projects-list" />,
+  <PrivateRoute path="/mes-favoris" component={FavoriteProjectsPage} key="favorite-projects-list" />,
   <Route path="/projects/:page" component={List} exact key="page" />
 ];

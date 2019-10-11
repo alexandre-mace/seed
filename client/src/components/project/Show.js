@@ -16,6 +16,9 @@ import Forum from "./Forum";
 import {Create} from "../joindemand";
 import CustomMaterialButton from "../../utils/CustomMaterialButton";
 import jsonLDFlattener from "../../utils/jsonLDFlattener";
+import MemberProjectInfo from "./MemberProjectInfo";
+import {authentication} from "../../services/authentication";
+import {CustomLoader} from "../block/CustomLoader";
 
 class Show extends Component {
   static propTypes = {
@@ -30,6 +33,12 @@ class Show extends Component {
     deleted: PropTypes.object,
     del: PropTypes.func.isRequired,
   };
+  constructor(props){
+    super(props);
+    this.state = {
+      liking: false
+    }
+  }
 
 
   componentDidMount() {
@@ -54,27 +63,35 @@ class Show extends Component {
       if (!projectAlreadyBoostedChecker(item['@id'], user.supportedProjects)) {
         let supportedProjects = jsonLDFlattener(user.supportedProjects);
         supportedProjects.push(item['@id']);
+        this.setState({liking: true});
         this.props.update(item, {likes: item['likes'] + 1})
           .then(() => {
             this.props.updateUser(user, {supportedProjects: supportedProjects})
+              .then(() => {
+                this.setState({liking: false});
+              })
           })
       } else {
+        this.setState({liking: true});
         this.props.update(item, {likes: item['likes'] - 1})
           .then(() => {
             this.props.updateUser(user, {supportedProjects: arrayRemove(jsonLDFlattener(user.supportedProjects), item['@id'])})
+              .then(() => {
+                this.setState({liking: false});
+              })
           })
       }
     }
   };
-  projectOwnerChecker = (item) => {
+  projectMemberChecker = (item) => {
     const user = this.props.authenticated ? (this.props.userUpdated ? this.props.userUpdated : this.props.userRetrieved) : false;
 
     let check = false;
     if (!user) {
       return check;
     }
-    user.initiatedProjects.forEach(initiatedProject => {
-      if (initiatedProject['@id'] === item['@id']) {
+    item.members.forEach(member => {
+      if (member['@id'] === user['@id']) {
         check = true
       }
     });
@@ -132,18 +149,18 @@ class Show extends Component {
               {/*</div>*/}
               {item && (
                 <>
-                  <div className="d-flex justify-content-between">
-                    <Typography variant="h2" component="h2" gutterBottom>
+                  <div className="d-flex justify-content-between align-items-center">
+                    <Typography variant="h4" gutterBottom>
                       {item.pitch}
                     </Typography>
                     <div className="d-flex align-items-center">
-                      <CustomBoostButton item={item} user={user} handleBoost={() => this.handleBoost(item)}/>
+                      <CustomBoostButton item={item} user={user} handleBoost={() => this.state.liking ? null : this.handleBoost(item)}/>
                       <Typography variant={'h6'}>
                         {item.likes}
                       </Typography>
                     </div>
                   </div>
-                  <div className="d-flex justify-content-between align-items-center">
+                  <div className="d-flex flex-column flex-md-row justify-content-between align-items-between align-items-md-center">
                     <div className="d-flex flex-column justify-content-between">
                       <Typography variant={'h5'} gutterBottom>
                         {item.initiator &&
@@ -163,21 +180,35 @@ class Show extends Component {
                         ))}
                       </div>
                     </div>
-                    {(this.props.authenticated && user) ? (
+                    {(authentication.currentUserValue) ? (
                       <>
-                        {this.projectOwnerChecker(item) ? (
-                          <>
-                          </>
-                        ) : (
-                          <>
-                            {this.loggedUserHasAlreadyLikeTheProjectChecker(item) ? (
-                              <p>Vous avez demandé à rejoindre ce projet !</p>
+                        {this.props.authenticated && user &&
+                        <>
+                          {
+                            this.projectMemberChecker(item) ? (
+                              <div className="mt-3">
+                                <MemberProjectInfo project={item}/>
+                              </div>
                             ) : (
-                              <Create {...this.props} demander={user['@id']} project={item['@id']} status={'pending'}/>
-                            )}
-                          </>
-                        )}
+                              <>
+                                {this.loggedUserHasAlreadyLikeTheProjectChecker(item) ? (
+                                  <p>Vous avez demandé à rejoindre ce projet !</p>
+                                ) : (
+                                  <div className="mt-3">
+                                    <Create {...this.props} demander={user['@id']} project={item['@id']}
+                                            status={'pending'}/>
+                                  </div>
+                                )}
+                              </>
+                            )
+                          }
+                        </>
+                        }
+                        {!(this.props.authenticated && user) &&
+                          <CustomLoader/>
+                        }
                       </>
+
                     ) : (
                       <Link to="/se-connecter">
                         <CustomMaterialButton text={'Rejoindre le projet'} color={'primary'}/>
