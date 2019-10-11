@@ -37,6 +37,7 @@ import {PrivateRoute} from "./utils/PrivateRoute";
 import WelcomePage from "./pages/WelcomePage";
 import ConfirmJoinPage from "./pages/ConfirmJoinPage";
 import ConfirmJoinDemandPage from "./pages/ConfirmJoinDemandPage";
+import MyDemandsPage from "./pages/MyDemandsPage";
 
 const history = createBrowserHistory({
   basename: process.env.PUBLIC_URL
@@ -73,6 +74,7 @@ ReactDOM.render(
         <Route path="/bienvenue" component={WelcomePage} />
         <Route path="/confirmation-accepte-demande" component={ConfirmJoinDemandPage} />
         <Route path="/confirmation-demande-joindre" component={ConfirmJoinPage} />
+        <PrivateRoute path="/mes-demandes" component={MyDemandsPage} />
         <Route path="/" component={HomePage} />
         <Route render={() => <h1>Not Found</h1>} />
       </Switch>
