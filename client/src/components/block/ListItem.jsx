@@ -50,7 +50,7 @@ function ListItem(props) {
     const classes = useStyles();
 
     const user = props.authenticated ? (props.updated ? props.updated : props.retrieved) : false;
-    console.log(props.item);
+
     return (
         <div className="col-md-4 my-3">
             <Card key={props.item['@id']} className={classes.card}>
