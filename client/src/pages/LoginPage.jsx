@@ -19,7 +19,6 @@ export default class LoginPage extends React.Component {
                         <div className="col-12 col-md-6">
                             <Login {...this.props}/>
                         </div>
-                        <div className="mx-md-5"></div>
                         <div className="col-12 col-md-6">
                             <Register {...this.props}/>
                         </div>
