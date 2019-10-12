@@ -42,9 +42,12 @@ function a11yProps(index) {
 
 const useStyles = makeStyles(theme => ({
   root: {
-    width: '100vw',
-    marginLeft: '-15px'
+    marginLeft: '-15px',
+    marginRight: '-15px'
   },
+  flexContainer: {
+    justifyContent: 'space-between'
+  }
 }));
 
 export default function Forum(props) {
@@ -65,6 +68,7 @@ export default function Forum(props) {
       <AppBar position="static" color="default">
         <Tabs
           value={value}
+          classes={classes}
           onChange={handleChange}
           indicatorColor="primary"
           textColor="primary"
