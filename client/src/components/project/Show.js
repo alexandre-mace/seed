@@ -116,7 +116,7 @@ class Show extends Component {
   render() {
     if (this.props.deleted) return <Redirect to=".." />;
 
-    const item = this.props.updated ? this.props.updated : this.props.retrieved;
+    const item = this.props.retrieved;
     const user = this.props.authenticated ? (this.props.userUpdated ? this.props.userUpdated : this.props.userRetrieved) : false;
 
     return (
@@ -160,7 +160,7 @@ class Show extends Component {
                       </Typography>
                     </div>
                   </div>
-                  <div className="d-flex flex-column flex-md-row justify-content-between align-items-between align-items-md-center">
+                  <div className="d-flex flex-column justify-content-between align-items-between">
                     <div className="d-flex flex-column justify-content-between">
                       <Typography variant={'h5'} gutterBottom>
                         {item.initiator &&
