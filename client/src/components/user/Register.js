@@ -5,12 +5,31 @@ import { fetch } from '../../services/dataAccess';
 import { authentication } from '../../services/authentication';
 import { TextField } from 'formik-material-ui';
 import {
-    LinearProgress,
+  LinearProgress,
 } from '@material-ui/core';
 import CustomMaterialButton from "../../utils/CustomMaterialButton";
 import {setAuthenticated} from "../../actions/authentication";
 import {connect} from "react-redux";
 import {retrieve} from "../../actions/user/show";
+import Radio from "@material-ui/core/Radio";
+import Typography from "@material-ui/core/Typography";
+const activitySector = [
+  'Technique',
+  'Design',
+  'Juridique',
+  'Manuel',
+  "Communication",
+  "Marketing"
+];
+
+const radioButton = (props) => {
+  return(<Radio
+    name={props.field.name}
+    onChange={props.field.onChange}
+    value={props.field.value}
+    inputProps={{ 'aria-label': props.field.value }}
+  />)
+};
 
 class Register extends React.Component {
     constructor(props) {
@@ -28,6 +47,7 @@ class Register extends React.Component {
                         firstName: '',
                         lastName: '',
                         email: '',
+                        mainSkill: '',
                         password: '',
                         confirmPassword: ''
                     }}
@@ -47,8 +67,8 @@ class Register extends React.Component {
                             .required('Le mot de passe de confirmation est requis')
                     })}
                     onSubmit={(fields, { setStatus, setSubmitting, setErrors, resetForm }, initialValues) => {
-                        setStatus();
-                        fetch('/users', { method: 'POST', body: JSON.stringify(fields, ['firstName', 'lastName', 'email', 'password'], 4)  })
+                      setStatus();
+                        fetch('/users', { method: 'POST', body: JSON.stringify(fields, ['firstName', 'lastName', 'email', 'password', 'mainSkill'], 4)  })
                             .then((response) => {
                                 authentication.login(fields.email, fields.password)
                                     .then(
@@ -81,6 +101,23 @@ class Register extends React.Component {
                                 <Field component={TextField} label="Nom" margin="normal" fullWidth name="lastName" type="text" />
                                 <ErrorMessage name="lastName" component="div" className="invalid-feedback" />
                             </div>
+                            <Typography variant="h6" gutterBottom={true}>
+                              Compétence principale
+                            </Typography>
+                          <div>
+                            <div>
+                              <div>
+                                {activitySector.map((sector, index) => (
+                                      <label key={index}>
+                                        <Field name="mainSkill" component={radioButton} type="radio" value={sector} />{' '}
+                                        {sector}
+                                      </label>
+                                    )
+                                )}
+                              </div>
+                            </div>
+                          </div>
+
                             <div className="form-group">
                                 <Field component={TextField} label="Email" margin="normal" fullWidth name="email" type="text" />
                                 <ErrorMessage name="email" component="div" className="invalid-feedback" />
