@@ -103,6 +103,11 @@ class User implements UserInterface
      */
     private $joinDemands;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $mainSKill;
+
     public function __construct()
     {
         $this->messages = new ArrayCollection();
@@ -359,6 +364,18 @@ class User implements UserInterface
                 $joinDemand->setDemander(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getMainSKill(): ?string
+    {
+        return $this->mainSKill;
+    }
+
+    public function setMainSKill(string $mainSKill): self
+    {
+        $this->mainSKill = $mainSKill;
 
         return $this;
     }
